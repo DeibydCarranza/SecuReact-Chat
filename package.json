@@ -1,0 +1,21 @@
+{
+  "name": "secureact-chat",
+  "version": "1.0.0",
+  "description": "A secure message sending protocol using React and Socke.io",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "dev": "nodemon Backend/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "http": "^0.0.1-security",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0",
+    "socket.io": "^4.7.5"
+  }
+}
