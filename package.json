@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A secure message sending protocol using React and Socke.io",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "dev": "nodemon Backend/index.js"
   },
