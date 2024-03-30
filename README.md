@@ -15,6 +15,16 @@ npm i nodemon -D
 
 # Carpeta Frontend/
 npm i vite
+npm i socket.io-client
+
+
+# instalación de los íconos
+
+# url: https://docs.fontawesome.com/web/use-with/react/
+
+npm i --save @fortawesome/free-solid-svg-icons
+npm i --save @fortawesome/free-regular-svg-icons
+npm i --save @fortawesome/free-brands-svg-icons
 ```
 
 

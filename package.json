@@ -17,5 +17,10 @@
     "morgan": "^1.10.0",
     "nodemon": "^3.1.0",
     "socket.io": "^4.7.5"
+  },
+  "dependencies": {
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1"
   }
 }
