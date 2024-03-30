@@ -4,39 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import './App.css';
+import Login from './modules/Login'; // Importar el componente Login
 
 const socketClient = io('/');
 
 export function App() {
 	// login 
-  const [loggedIn, setLoggedIn] = useState(false);
-	const [password, setPassword] = useState('');
+
+	const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = () => {
-		if (password.trim() !== '' && password.trim() === 'alice' ) {
-      setLoggedIn(true);
-    } else {
-      console.log('Por favor ingresa una contraseña válida');
-    }
-  };
-
-	const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    setLoggedIn(true);
   };
 
   if (!loggedIn) {
-    return (
-      <div className="login-container">
-        <h2>Iniciar sesión</h2>
-				<input
-          type="password"
-          placeholder="secret"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <button onClick={handleLogin}>Iniciar sesión</button>
-      </div>
-    );
+    return <Login onLogin={handleLogin} />; // Utilizar el componente Login
   }
 
 
