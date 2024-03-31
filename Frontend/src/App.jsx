@@ -5,6 +5,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 import './App.css';
 import Login from './modules/Login'; // Importar el componente Login
+import { ChatsCard } from './modules/ChatsCard.jsx';
 
 const socketClient = io('/');
 
@@ -32,9 +33,7 @@ export function App() {
           <h2>Usuarios</h2>
         </div>
         <div className='module-contact-target'>
-          <FontAwesomeIcon icon={faUser} />
-          <h3>Contact</h3>
-          <span>Status</span>
+          <ChatsCard/><ChatsCard/><ChatsCard/><ChatsCard/>
         </div>
       </div>
 

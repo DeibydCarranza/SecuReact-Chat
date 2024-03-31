@@ -47,12 +47,8 @@ div{
   align-items: center;
   flex-wrap: wrap;
 }
-.module-contact-target h3{
-  width: 80%;
-}
-.module-contact-target span{
-  width: 90%;
-}
+
+
 .message-main-conversation{
   width: 70%;
   height: 100%;
@@ -73,9 +69,7 @@ div{
   gap: 2%;
   align-items: center;
 }
-.module-contact h2{
-  width: 90%;
-}
+
 .contact-icont{
   width: 2%;
 }
