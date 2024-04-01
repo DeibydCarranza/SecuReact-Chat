@@ -7,6 +7,7 @@ import './App.css';
 import Login from './modules/Login'; // Importar el componente Login
 import { ChatsCard } from './modules/ChatsCard.jsx';
 import Message from './modules/Message';
+import { Input } from './modules/Input.jsx';
 
 const socketClient = io('/');
 
@@ -26,6 +27,8 @@ const users = [
 ]
 
 export function App() {
+  // to send messages:  Inpt.jsx -> Message.jsx
+  const [messages,setMessages]=useState([])
 	// login 
 
 	const [loggedIn, setLoggedIn] = useState(false);
@@ -87,11 +90,7 @@ export function App() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <form className='module-input'>
-            <input className='module-input-input' type="text" />
-            <button className='module-input-button' label='write your message'> Send </button>
-          </form>
-          <button className='module-gen-key'> Llave </button>
+          <Input socketClient={socketClient} userName={"Name"} setMessages={setMessages}/>
         </div>
       </div>
     </main>	
