@@ -74,19 +74,6 @@ div{
   width: 2%;
 }
 
-.module-message{
-  padding: 0% 2%;
-  box-sizing: border-box;
-}
-
-.module-message .message{
-  font-size: large;
-}
-
-.module-message .hora{
-  font-size: medium;
-  direction: rtl;
-}
 
 .message-main-conversation-input{
   width: 100%;
@@ -119,4 +106,3 @@ div{
   font-size: large;
   padding: 1% 1%;
 }
-

@@ -6,6 +6,7 @@ import { faUser } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 import Login from './modules/Login'; // Importar el componente Login
 import { ChatsCard } from './modules/ChatsCard.jsx';
+import Message from './modules/Message';
 
 const socketClient = io('/');
 
@@ -80,11 +81,11 @@ export function App() {
         </div>
 
         <div className='message-main-conversation-conversation'>
-          <div className='module-message'>
-            <p className='message'>Message</p>
-            <p className='hora'>12:00</p>
-          </div>
+          <Message isMe={true} texto="Mensaje enviado" />
+          <Message isMe={false} texto="Mensaje recibido" />
+          <Message isMe={true} texto="Mensaje envido" />
         </div>
+        
         <div className='message-main-conversation-input'>
           <form className='module-input'>
             <input className='module-input-input' type="text" />

@@ -1,0 +1,31 @@
+.module-message .message{
+    font-size: large;
+}
+
+.module-message .hora{
+    font-size: medium;
+    direction: rtl;
+}
+
+.module-message-me{
+    padding: 0% 2%;
+    box-sizing: border-box;
+    background-color: #4c007d;
+}
+  
+.module-message-me .message{
+    font-size: large;
+    direction: rtl;
+}
+  
+.module-message-me .hora{
+    font-size: medium;
+    direction: rtl;
+}
+
+/*Mensaje enviado por el otro*/
+.module-message{
+    padding: 0% 2%;
+    box-sizing: border-box;
+    background-color: #1b004b;
+}
