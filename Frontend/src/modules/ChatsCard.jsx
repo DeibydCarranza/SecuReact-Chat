@@ -1,16 +1,20 @@
 import '../assets/ChatsCards.css'
 
-export function ChatsCard({}){
+export function ChatsCard({userName, preview, avatar, time, onClick}){
 
+  // Función onClick pasando el username
+  const handleClick = () => {
+    onClick(userName); 
+  };
   return(
     <ul className="section-chats">
-        <li className="section-chat-user">
-            <img src="https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg" alt="" />
+        <li className="section-chat-user" onClick={handleClick}>
+            <img src={avatar} alt="avatar" />
             <section className='section-chat-texts'>
-              <span className="section-chat-name">Alice</span>
-              <span className="section-chat-message">Te envío mi secreto</span>
+              <span className="section-chat-name">{userName}</span>
+              <span className="section-chat-message">{preview}</span>
             </section>
-            <span className="section-chat-hour">2:09 PM</span>
+            <span className="section-chat-hour">{time}</span>
         </li>
     </ul>
   )

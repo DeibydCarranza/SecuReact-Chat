@@ -9,10 +9,26 @@ import { ChatsCard } from './modules/ChatsCard.jsx';
 
 const socketClient = io('/');
 
+const users = [
+  {
+    userName: 'Bob',
+    preview: 'Madre mía Willy',
+    avatar: 'https://png.pngtree.com/png-vector/20220817/ourmid/pngtree-man-avatar-with-circle-frame-vector-ilustration-png-image_6110328.png',
+    time: '2:09 PM'
+  },
+  {
+    userName: 'Alice',
+    preview: 'Así pasa cuando sucede',
+    avatar: 'https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg',
+    time: '5:19 PM'
+  }
+]
+
 export function App() {
 	// login 
 
 	const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedChat, setSelectedChat] = useState(null);
 
   const handleLogin = () => {
     setLoggedIn(true);
@@ -22,6 +38,10 @@ export function App() {
     return <Login onLogin={handleLogin} />; // Utilizar el componente Login
   }
 
+  // Actualizar chat al hacer clic en contacto
+  const handleChatSelect = (userName) => {
+    setSelectedChat(userName); 
+  };
 
 
 
@@ -33,14 +53,30 @@ export function App() {
           <h2>Usuarios</h2>
         </div>
         <div className='module-contact-target'>
-          <ChatsCard/><ChatsCard/><ChatsCard/><ChatsCard/>
+          {
+            users.map(({userName, preview, avatar, time}) => (
+              <ChatsCard
+                key={userName}
+                userName={userName}
+                avatar={avatar}
+                preview={preview}
+                time={time}
+                onClick={() => handleChatSelect(userName)}
+              ></ChatsCard>
+            ))
+          }
         </div>
       </div>
 
       <div className='message-main-conversation'>
         <div className='module-contact'>
-          <FontAwesomeIcon className="contact-icon" icon={faUser} />
-          <h2 className='module-contect'>Contact</h2>
+          {selectedChat ? (
+            <img src={users.find(user => user.userName === selectedChat)?.avatar} alt="Avatar" className="contact-avatar" style={{ width: '50px', height: '50px' }} />
+
+          ) : (
+            <FontAwesomeIcon className="contact-icon" icon={faUser} />
+          )}
+          <h2 className='module-contect'>{selectedChat || "Contact"}</h2>
         </div>
 
         <div className='message-main-conversation-conversation'>
