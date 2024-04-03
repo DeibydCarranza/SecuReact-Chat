@@ -20,11 +20,30 @@ function Login({ onLogin }) {
     <div className="login-container">
       <h2>Iniciar sesión</h2>
       <input
-        type="password"
-        placeholder="Contraseña"
+        type="text"
+        placeholder="user"
         value={password}
         onChange={handlePasswordChange}
+        required
       />
+      <input
+        type="password"
+        placeholder="secreto"
+        onChange={handlePasswordChange}
+        required
+      />
+      <div className='login-option'>
+        <input
+          type="checkbox"
+          id='generar'
+        />
+        <label htmlFor="generar">Generar</label>
+        <input
+          type="checkbox"
+          id='upload'
+        />
+        <label htmlFor="upload">Cargar</label>
+      </div>
       <button onClick={handleLogin}>Iniciar sesión</button>
     </div>
   );
