@@ -1,31 +1,55 @@
+/*Mensaje enviado por el otro*/
+.module-message{
+    max-width: 70%;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    position: relative;
+    
+}
+
 .module-message .message{
-    font-size: large;
+    font-size: 16px;
+    padding: 2px;
+    color: #333;
+    line-height: 1.0;
+    direction: ltr;
 }
 
 .module-message .hora{
-    font-size: medium;
-    direction: rtl;
+    font-size: 11px;
+    color: #666;
+    position: absolute;
+    bottom: -3px;
+    right: 10px;
 }
 
+/*Estilo mensajes enviados por mi*/
 .module-message-me{
-    padding: 0% 2%;
+    max-width: 70%;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 15px;
     box-sizing: border-box;
-    background-color: #4c007d;
+    background-color: #7d36b0;
+    position: relative;
+    left: 25%;
 }
   
 .module-message-me .message{
-    font-size: large;
+    font-size: 18px;
+    padding: 2px;
+    color: #fff;
+    line-height: 1.0;
     direction: rtl;
 }
   
 .module-message-me .hora{
-    font-size: medium;
-    direction: rtl;
-}
-
-/*Mensaje enviado por el otro*/
-.module-message{
-    padding: 0% 2%;
-    box-sizing: border-box;
-    background-color: #1b004b;
+    font-size: 11px;
+    color: #e0d4d4;
+    position: absolute;
+    bottom: -3px;
+    right: 10px;
 }

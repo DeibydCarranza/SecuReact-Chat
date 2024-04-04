@@ -83,10 +83,10 @@ export function App() {
           <h2 className='module-contect'>{selectedChat || "Contact"}</h2>
         </div>
 
-        <div className='message-main-conversation-conversation'>
-          <Message isMe={true} texto="Mensaje enviado" />
-          <Message isMe={false} texto="Mensaje recibido" />
-          <Message isMe={true} texto="Mensaje envido" />
+        <div className='message-main-conversation-conversation' style={{ overflowY: 'scroll'}}>
+          {messages.map((messages, index)=>(
+            <Message from={messages.from} texto={messages.content} hora={messages.time}/>
+          ))}
         </div>
         
         <div className='message-main-conversation-input'>
