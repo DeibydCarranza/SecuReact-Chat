@@ -14,6 +14,7 @@ export function useInput({socketClient, userName}){
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }
         socketClient.emit("Message", message)
+        message.from ='Me'
         copyMessage(message)
         setInputMessage('')
     }

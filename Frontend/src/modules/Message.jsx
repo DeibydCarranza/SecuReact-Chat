@@ -1,14 +1,14 @@
 import '../assets/Message.css'
 
-function Message ({texto, isMe}){
-    const msgClassName = isMe ? 
+function Message ({texto, from, hora}){
+    const msgClassName = (from == 'Me') ? 
         'module-message-me' :
         'module-message'
     return (
         
         <div className={msgClassName}>
             <p className='message'>{texto}</p>
-            <p className='hora'>12:00</p>
+            <p className='hora'>{hora}</p>
         </div>
     )
 }
