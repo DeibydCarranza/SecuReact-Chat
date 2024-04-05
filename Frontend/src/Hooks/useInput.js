@@ -8,12 +8,16 @@ export function useInput({socketClient, userName}){
     const copyMessage = (inputElement) => {setBanner([...banner,inputElement])}    
     const handleSubmit = (event) => {
         event.preventDefault()
+        /* 
+            A futuro debe ser suplantado por una prop que indique con quien queremos hablar
+        */
+        const to = (userName === 'bob' ? 'alice':'bob')
         const message = {
             content:inputMessage,
-            from: userName,
+            from: to,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }
-        socketClient.emit("Message", message)
+        socketClient.emit("Request", message)
         message.from ='Me'
         copyMessage(message)
         setInputMessage('')
@@ -23,8 +27,8 @@ export function useInput({socketClient, userName}){
     }
 
     useEffect(()=>{
-        socketClient.on("Request",(request)=>copyMessage(request))
-        return ()=>{socketClient.off("Request",(request)=>copyMessage(request))}
+        socketClient.on("Response",(request)=>copyMessage(request))
+        return ()=>{socketClient.off("Response",(request)=>copyMessage(request))}
     },)
 
     return ({onChange:onChange,handleSubmit:handleSubmit, banner:banner, inputMessage:inputMessage})

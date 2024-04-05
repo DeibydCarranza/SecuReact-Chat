@@ -1,11 +1,15 @@
 // Login.jsx
 import React, { useState } from 'react';
 
-function Login({ onLogin }) {
+function Login({ onLogin, setUser}) {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
     if (password.trim() !== '' && (password.trim() === 'alice' || password.trim() === 'bob')) {
+      /*
+          Forma parte de la implementacióon especial para pasar el username a App.jsx
+      */
+      setUser(password)
       onLogin();
     } else {
       console.log('Por favor ingresa una contraseña');

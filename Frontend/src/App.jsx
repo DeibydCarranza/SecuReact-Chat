@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useReducer, useRef, useState } from 'react';
 import io from 'socket.io-client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
@@ -34,21 +34,36 @@ export function App() {
 	const [loggedIn, setLoggedIn] = useState(false);
   const [selectedChat, setSelectedChat] = useState(null);
 
+  /*
+      Especial, forma provicional de pasar el ""user""
+      debe ser sustituido por un valor pasado por el contexto de Login.jsx a App.jsx
+  */
+  const [user, setUser] = useState('')
+  useEffect(()=>{
+    if(user !== undefined){
+      socketClient.emit("Discover",{
+        content:'',
+        from: user,
+        time: ''
+      })
+    }
+  },[user])
+
   const handleLogin = () => {
     setLoggedIn(true);
   };
 
   if (!loggedIn) {
-    return <Login onLogin={handleLogin} />; // Utilizar el componente Login
+    return <Login onLogin={handleLogin} setUser={setUser}/>; // Utilizar el componente Login
   }
 
   // Actualizar chat al hacer clic en contacto
   const handleChatSelect = (userName) => {
     setSelectedChat(userName); 
   };
+  
 
-
-
+  
   return (
     // Plantilla principal después del inicio de sesión
     <main className="message-main">
@@ -90,7 +105,7 @@ export function App() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <Input socketClient={socketClient} userName={"Name"} setMessages={setMessages}/>
+          <Input socketClient={socketClient} userName={user} setMessages={setMessages}/>
         </div>
       </div>
     </main>	
