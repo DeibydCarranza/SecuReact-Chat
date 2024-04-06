@@ -8,6 +8,7 @@ import Login from './modules/Login'; // Importar el componente Login
 import { ChatsCard } from './modules/ChatsCard.jsx';
 import Message from './modules/Message';
 import { Input } from './modules/Input.jsx';
+import { TitleChatCard } from './modules/TitleChatsCard.jsx'
 
 const socketClient = io('/');
 
@@ -49,6 +50,12 @@ export function App() {
     }
   },[user])
 
+  // Temporary hook to load the profile picture of the logged-in user
+  useEffect(()=>{
+    console.log(`Render..${user}`)
+    setSelectedChat(user)
+  },[user])
+
   const handleLogin = () => {
     setLoggedIn(true);
   };
@@ -88,16 +95,7 @@ export function App() {
       </div>
 
       <div className='message-main-conversation'>
-        <div className='module-contact'>
-          {selectedChat ? (
-            <img src={users.find(user => user.userName === selectedChat)?.avatar} alt="Avatar" className="contact-avatar" style={{ width: '50px', height: '50px' }} />
-
-          ) : (
-            <FontAwesomeIcon className="contact-icon" icon={faUser} />
-          )}
-          <h2 className='module-contect'>{selectedChat || "Contact"}</h2>
-        </div>
-
+        <TitleChatCard selectedChat={selectedChat} users={users}/>
         <div className='message-main-conversation-conversation' style={{ overflowY: 'scroll'}}>
           {messages.map((messages, index)=>(
             <Message from={messages.from} texto={messages.content} hora={messages.time}/>

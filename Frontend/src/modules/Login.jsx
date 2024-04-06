@@ -5,7 +5,7 @@ function Login({ onLogin, setUser}) {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (password.trim() !== '' && (password.trim() === 'alice' || password.trim() === 'bob')) {
+    if (password.trim() !== '' && (password.trim() === 'Alice' || password.trim() === 'Bob')) {
       /*
           Forma parte de la implementacióon especial para pasar el username a App.jsx
       */
