@@ -100,16 +100,15 @@
   }
   
   .radio-input label {
-    width: 100%;
     padding: 10px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: inline-block;
     z-index: 1;
     font-weight: 600;
     letter-spacing: -1px;
     font-size: 14px;
+    width: 50%; 
+  text-align: center; 
   }
   
   .selection {
@@ -120,8 +119,34 @@
     left: 0;
     top: 0;
   }
-
+  
   .radio-input label:has(input:checked) {
     color: var(--white);
     background-color: var(--pink);
   }
+  
+  tab-container {
+    width: 100%;
+    display: grid;
+    margin-top: 5px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    border: solid rgba(255, 255, 255, 0.03);
+    border-radius: 0.5em;
+  }
+  
+  tab-content {
+    display: none;
+    grid-column: 1 / -1;
+  }
+  
+  .tabs-login {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+
+
+  /*Uploading*/
+

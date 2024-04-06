@@ -4,6 +4,7 @@ import  '../assets/Login.css'
 
 function Login({ onLogin, setUser}) {
   const [password, setPassword] = useState('');
+  const [activeTab, setActiveTab] = useState('generate');
 
   const handleLogin = () => {
     if (password.trim() !== '' && (password.trim() === 'alice' || password.trim() === 'bob')) {
@@ -19,6 +20,10 @@ function Login({ onLogin, setUser}) {
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handleTabChange = (tabName) => {
+    setActiveTab(tabName);
   };
 
   return (
@@ -56,25 +61,37 @@ function Login({ onLogin, setUser}) {
                       
 
         {/* Login option */}
-        <div className="tabs-login">
+        <div className="tabs-login radio-input">
 
-          <div class="radio-input">
-            
-            {/* Option Generate */}
-            <label>
-              <input type="radio" id="generate-login" name="value-radio" value="value-2"/>
+          <div className="tab-container">
+            <label onClick={() => handleTabChange('generate')}>
+              <input type="radio" checked={activeTab === 'generate'} />
               <span>Generate</span>
             </label>
-
-            {/* Option Upload */}
-            <label>
-              <input type="radio" id="upload-login" name="value-radio" value="value-1"/>
+            <label onClick={() => handleTabChange('upload')}>
+              <input type="radio" checked={activeTab === 'upload'} />
               <span>Upload keys</span>
             </label>
-          
-          </div>
-        </div>
 
+            <div className="tab-content">
+
+              {/* Option Generate */}
+              {activeTab === 'generate' && (
+                <>
+                  <p>Generando...</p>
+                </>
+              )}
+
+              {/* Option Upload */}
+              {activeTab === 'upload' && (
+                <>
+                <p>Uploading...</p>
+                </>
+              )}
+            </div>
+          </div>
+
+        </div>
 
         {/* Send Button */}
         <div className="center-item">
