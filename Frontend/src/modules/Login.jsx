@@ -1,10 +1,14 @@
 // Login.jsx
 import React, { useState } from 'react';
+import { Upload } from './Upload';
+import ButtonWithSpinner from './ButtonWithSpinner';
 import  '../assets/Login.css'
 
 function Login({ onLogin, setUser}) {
   const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('generate');
+  const [fileNamePrivate, setFileNamePrivate] = useState('');
+  const [fileNamePublic, setFileNamePublic] = useState('');
 
   const handleLogin = () => {
     if (password.trim() !== '' && (password.trim() === 'alice' || password.trim() === 'bob')) {
@@ -22,8 +26,18 @@ function Login({ onLogin, setUser}) {
     setPassword(event.target.value);
   };
 
+  //Tab change
   const handleTabChange = (tabName) => {
     setActiveTab(tabName);
+  };
+
+  // File events
+  const handleFilePrivate = (file) => {
+    setFileNamePrivate(file.name);
+  };
+
+  const handleFilePublic = (file) => {
+    setFileNamePublic(file.name);
   };
 
   return (
@@ -78,16 +92,27 @@ function Login({ onLogin, setUser}) {
               {/* Option Generate */}
               {activeTab === 'generate' && (
                 <>
-                  <p>Generando...</p>
+                  <section className="generate-section">
+                    <ButtonWithSpinner></ButtonWithSpinner>
+                  </section>
                 </>
               )}
 
               {/* Option Upload */}
               {activeTab === 'upload' && (
-                <>
-                <p>Uploading...</p>
-                </>
+                <section className="upload-section">
+                  <div className="upload-components name-upload">
+                    <Upload handleFile={handleFilePrivate} typeCri="Private" />
+                    {fileNamePrivate ? <p>Private Key: {fileNamePrivate}</p> : <span>Select a file</span>}
+                  </div>
+
+                  <div className="upload-components name-upload">
+                    <Upload handleFile={handleFilePublic} typeCri="Public" />
+                    {fileNamePublic ? <p>Public Key: {fileNamePublic}</p> :  <span >Select a file</span>}
+                  </div>
+                </section>
               )}
+
             </div>
           </div>
 
@@ -95,8 +120,9 @@ function Login({ onLogin, setUser}) {
 
         {/* Send Button */}
         <div className="center-item">
-          <button onClick={handleLogin}>Iniciar sesión</button>
+          <button className="send-login" onClick={handleLogin}>Iniciar sesión</button>
         </div>
+
       </div>
     </form>
   );

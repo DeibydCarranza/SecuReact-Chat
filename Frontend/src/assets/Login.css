@@ -17,6 +17,8 @@
   --lightdark: #2a2a2a;
   --lightpink: #f7d7fc;
   --pink: #9500ff;
+  --secondary: #760be0;
+  --pinkMex: #e100ff;
   --container_width: 100%;
 }
 
@@ -74,7 +76,7 @@
   }
   
   .inputField::placeholder {
-    color: var(--lightdark);
+    color: var(--grey);
     font-size: 1em;
     font-weight: 500;
   }
@@ -108,16 +110,13 @@
     letter-spacing: -1px;
     font-size: 14px;
     width: 50%; 
-  text-align: center; 
+    text-align: center; 
   }
   
   .selection {
     position: absolute;
     height: 100%;
-    width: calc(var(--container_width) / 2);
-    z-index: 0;
-    left: 0;
-    top: 0;
+    width: calc(var(--container_width) / 2);    
   }
   
   .radio-input label:has(input:checked) {
@@ -145,8 +144,163 @@
     width: 100%;
     margin-top: 20px;
   }
+
+.radio-input label:hover,
+.radio-input label:active {
+  background-color: #e5c3ff;
+  color: var(--pink);
+}
   
 
 
   /*Uploading*/
+.upload-section{
+  margin: 0 10%;
+}
 
+.upload-components{
+  display: inline-flex;
+  width: 100%;
+  padding: 10px;
+
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  outline: none;
+  border-bottom: 4px solid var(--pink);
+}
+
+.name-upload p{
+  right: 10%;
+  position: absolute;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+}
+
+.name-upload span{
+  right: 30%;
+  margin-top: 2%;
+  position: absolute;
+  text-overflow: ellipsis;
+  overflow: hidden !important;
+  color: var(--grey);
+
+}
+
+.upload-button {
+  background: var(--pinkMex);
+  border: 1px solid var(--pinkMex);
+  border-radius: 10px;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 12px 14px;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px;
+}
+
+.upload-button:hover,
+.upload-button:active {
+  background-color: initial;
+  color: var(--pinkMex);
+}
+
+.upload-button:active {
+  opacity: .5;
+}
+
+
+
+/* Generate */
+
+.button-container{
+  display: grid;
+  margin: 2%;
+}
+.custom-button {
+  position: relative;
+  height:60px;
+  width: 100px;
+  margin: 3% 0%;
+  background: var(--pinkMex);
+  border: 1px solid var(--pinkMex);
+  border-radius: 10px;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 800;
+  min-height: 40px;
+  padding: 12px 14px;
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px;
+}
+
+.custom-button:hover,
+.custom-button:active{
+  background-color: initial;
+  color: var(--pinkMex);
+
+}
+
+.spinner:hover,
+.spinner:active {
+  background-color: initial;
+  border-top-color: var(--pinkMex);
+}
+
+.custom-button:active {
+  opacity: .5;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--lightpink);
+  animation: spin 1s linear infinite;
+}
+.spans-container{
+  display: grid;
+}
+@keyframes spin {
+  0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+
+
+
+/* Send Button*/
+
+.send-login {
+  background-image: linear-gradient(var(--pink) 0, var(--secondary) 100%);
+  border-radius: 5px;
+  border-style: none;
+  box-shadow: rgba(245, 244, 247, .25) 0 1px 1px inset;
+  color: var(--white);
+  cursor: pointer;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: 500;
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  vertical-align: bottom;
+  width: 190px;
+}
+
+.send-login:hover {
+  opacity: .7;
+}
