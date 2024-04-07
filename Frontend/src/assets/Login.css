@@ -16,7 +16,7 @@
   --dark: #1a1a1a;
   --lightdark: #2a2a2a;
   --lightpink: #f7d7fc;
-  --pink: #9500ff;
+  --pink: #8b18dd;
   --secondary: #760be0;
   --pinkMex: #e100ff;
   --container_width: 100%;
@@ -25,17 +25,17 @@
 /* Forms, inputs*/
 .form_main {
     box-sizing: border-box;
-    width: 55%;
+    width: 550px;
     display: flex;
     flex-direction: column;
-    
     background-color: var(--lightpink);
-    padding: 30px 30px 30px 30px;
-    border-radius: 30px;
+    padding: 30px;
+    border-radius: 20px;
     box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.062);
   }
   
   .heading {
+    align-self: flex-start;
     font-size: 2.5em;
     color: var(--lightdark);
     font-weight: 700;
@@ -59,9 +59,8 @@
     width: 100%;
     height: 50px;
     background-color: transparent;
-    border: none;
-    border-bottom: 2px solid var(--grey);
-    border-radius: 30px;
+    border: 0.5px solid var(--grey);
+    border-radius: 12px;
     margin: 10px 0;
     color: var(--dark);
     font-size: .9em;
@@ -285,22 +284,20 @@
 /* Send Button*/
 
 .send-login {
-  background-image: linear-gradient(var(--pink) 0, var(--secondary) 100%);
-  border-radius: 5px;
+  background: var(--pink);
+  border-radius: 12px;
   border-style: none;
-  box-shadow: rgba(245, 244, 247, .25) 0 1px 1px inset;
   color: var(--white);
   cursor: pointer;
   display: inline-block;
   font-size: 16px;
   font-weight: 500;
-  height: 60px;
-  line-height: 60px;
+  height: 50px;
   text-align: center;
-  vertical-align: bottom;
-  width: 190px;
+  vertical-align: center;
+  width: 100%;
 }
 
 .send-login:hover {
-  opacity: .7;
+  opacity: 0.9;
 }

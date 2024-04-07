@@ -5,7 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url('../src/img/login.jpg');
+  background: linear-gradient(rgb(25, 12, 126), rgb(104, 17, 138));
   background-repeat: no-repeat;
   background-size: cover; 
 }
@@ -13,6 +13,7 @@
 .message-main{
   width: 80%;
   height: 80%;
+  border-radius: 50px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -24,6 +25,7 @@
 .message-main-contacts{
   width: 30%;
   height: 100%;
+  border-radius: 50px 0 0 50px;
   padding: 1%;
   box-sizing: border-box;
   display: flex;
@@ -47,6 +49,7 @@
 .message-main-conversation{
   width: 70%;
   height: 100%;
+  border-radius: 0 50px 50px 0;
   padding: 1%;
   box-sizing: border-box;
   display: flex;

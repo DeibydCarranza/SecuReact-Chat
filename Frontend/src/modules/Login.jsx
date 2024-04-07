@@ -42,7 +42,7 @@ function Login({ onLogin, setUser}) {
 
   return (
     <form className="form_main " action="">
-      <p className="heading center-item">Login</p>
+      <p className="heading center-item">Start a chat</p>
       <div className="login-cotainer ">
         
         {/* Input Username */}
@@ -120,7 +120,7 @@ function Login({ onLogin, setUser}) {
 
         {/* Send Button */}
         <div className="center-item">
-          <button className="send-login" onClick={handleLogin}>Iniciar sesión</button>
+          <button className="send-login" onClick={handleLogin}>Sing in</button>
         </div>
 
       </div>
