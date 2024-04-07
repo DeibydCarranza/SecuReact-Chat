@@ -11,7 +11,7 @@ export function useInput({socketClient, userName}){
         /* 
             A futuro debe ser suplantado por una prop que indique con quien queremos hablar
         */
-        const to = (userName === 'bob' ? 'alice':'bob')
+        const to = (userName === 'Bob' ? 'Alice':'Bob')
         const message = {
             content:inputMessage,
             from: to,

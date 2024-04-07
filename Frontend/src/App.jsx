@@ -97,8 +97,8 @@ export function App() {
       <div className='message-main-conversation'>
         <TitleChatCard selectedChat={selectedChat} users={users}/>
         <div className='message-main-conversation-conversation' style={{ overflowY: 'scroll'}}>
-          {messages.map((messages, index)=>(
-            <Message from={messages.from} texto={messages.content} hora={messages.time}/>
+          {messages.map((messages)=>(
+            <Message key={messages.content+messages.time} from={messages.from} texto={messages.content} hora={messages.time}/>
           ))}
         </div>
         
