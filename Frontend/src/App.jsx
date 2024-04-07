@@ -41,7 +41,7 @@ export function App() {
   */
   const [user, setUser] = useState('')
   useEffect(()=>{
-    if(user !== undefined){
+    if(user !== ''){
       socketClient.emit("Discover",{
         content:'',
         from: user,
