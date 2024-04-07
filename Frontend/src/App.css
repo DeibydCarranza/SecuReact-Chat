@@ -5,7 +5,9 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: rgb(122, 115, 115);
+  background-image: url('../src/img/login.jpg');
+  background-repeat: no-repeat;
+  background-size: cover; 
 }
 
 .message-main{
@@ -18,13 +20,6 @@
   background-color: black;
 }
 
-div{
-  border-width: 1px;
-  border-style: solid;
-  border-color: white;
-  background-color: rgb(45, 41, 41);
-  color: white;
-}
 
 .message-main-contacts{
   width: 30%;
