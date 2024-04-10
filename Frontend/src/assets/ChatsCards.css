@@ -48,13 +48,13 @@
 
 .section-chat-texts {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .section-chat-name {
-  font-size: 14px;
+  font-size: larger;
   line-height: 22px;
-  color: var(--dark);
+  color: var(--white);
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 600;
 }
@@ -77,6 +77,15 @@
   color: var(--grey);
 }
 
+.section-chat-user{
+  display: flex;
+  border-radius: 15px;
+  flex-direction: row;
+  align-items: center;
+  gap: 5%;
+}
+
+
 .section-chat-user.active, 
 .section-chat-user:hover {
   background-color: var(--hoverColor);
@@ -85,11 +94,24 @@
 
 .section-chat-user.active span, 
 .section-chat-user:hover span {
+  font-size: x-large;
   color: var(--white);
   background: transparent;
 }
 
+.section-chat-user.active .section-chat-img, 
+.section-chat-user:hover .section-chat-img {
+  background-color: rgb(60, 19, 225);
+  border: 2px rgb(60, 19, 225) solid;
+}
 .section-chat-user.active:after, 
 .section-chat-user:hover:after {
   display: none;
+}
+
+.section-chat-img {
+  padding: 20px;
+  border: 2px white solid;
+  border-radius: 50%;
+  
 }

@@ -3,27 +3,22 @@ import React, { useState } from 'react';
 import { Upload } from './Upload';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import  '../assets/Login.css'
+import { useNavigate } from 'react-router-dom'
 
-function Login({ onLogin, setUser}) {
+export function Login() {
   const [password, setPassword] = useState('');
+  const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('generate');
   const [fileNamePrivate, setFileNamePrivate] = useState('');
   const [fileNamePublic, setFileNamePublic] = useState('');
-
-  const handleLogin = () => {
-    if (password.trim() !== '' && (password.trim() === 'Alice' || password.trim() === 'Bob')) {
-      /*
-          Forma parte de la implementacióon especial para pasar el username a App.jsx
-      */
-      setUser(password)
-      onLogin();
-    } else {
-      console.log('Por favor ingresa una contraseña');
-    }
-  };
+  const singIn = useNavigate()
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
+  };
+
+  const handleUserNameChange = (event) => {
+    setUserName(event.target.value);
   };
 
   //Tab change
@@ -40,8 +35,17 @@ function Login({ onLogin, setUser}) {
     setFileNamePublic(file.name);
   };
 
+  const handleSumbmit = (event)=>{
+    event.preventDefault()
+    if (userName && password)
+      singIn(`/home/${userName}`, {state:{
+        userName:userName,
+        secret: password
+    }})
+  }
+
   return (
-    <form className="form_main " action="">
+    <form className="form_main " onSubmit={handleSumbmit}>
       <p className="heading center-item">Start a chat</p>
       <div className="login-cotainer ">
         
@@ -52,10 +56,10 @@ function Login({ onLogin, setUser}) {
           </svg>
           <input placeholder="Username" 
             id="username-login" 
-            value={password}
+            value={userName}
             className="inputField" 
             type="text"
-            onChange={handlePasswordChange}
+            onChange={handleUserNameChange}
             required/>
         </div>
             
@@ -67,6 +71,7 @@ function Login({ onLogin, setUser}) {
             <input 
               placeholder="Secret" 
               id="secret-login" 
+              value={password}
               className="inputField" 
               type="password"
               onChange={handlePasswordChange}
@@ -120,7 +125,7 @@ function Login({ onLogin, setUser}) {
 
         {/* Send Button */}
         <div className="center-item">
-          <button className="send-login" onClick={handleLogin}>Sing in</button>
+          <button className="send-login">Sing in</button>
         </div>
 
       </div>

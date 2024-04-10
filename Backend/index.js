@@ -39,6 +39,7 @@ io.on("connection", (socket)=>{
         console.log(`Client connected ID: ${socket.id}`)
         console.log("\n-----------------------")
 
+
         // to remove user are not connected
         socket.on("disconnect",()=>{
             console.log(`Usuario desconectado ${socket.id}`)
@@ -53,11 +54,16 @@ io.on("connection", (socket)=>{
             }
         })
 
-        socket.on("Discover",(messageDiscover)=>{
+        socket.on("Discover",(loggedUserName)=>{
             console.log("———— DISCOVER ————")
             // to prevent identity theft
-            if (!checkConnection(routingTable,messageDiscover.from)){
-                addConnection(routingTable,socket.id,messageDiscover.from)
+            if (!checkConnection(routingTable,loggedUserName)){
+                socket.emit("LoggedUsers",routingTable)
+                addConnection(routingTable,socket.id,loggedUserName)
+                socket.broadcast.emit("Broadcast Request",{
+                    socketID:socket.id,
+                    from: loggedUserName}
+                )
             }else{
                 console.log("Socket is now online")
             }
