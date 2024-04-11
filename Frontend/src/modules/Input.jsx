@@ -4,8 +4,8 @@ import { useEffect } from "react"
 import { useInput } from "../Hooks/useInput"
 
 
-export function Input({socketClient, userName, setMessages}){
-    const {banner,inputMessage, handleSubmit, onChange} = useInput({socketClient,userName})
+export function Input({socketClient, to, setMessages}){
+    const {banner,inputMessage, handleSubmit, onChange} = useInput({socketClient,to})
 
     // update the message status value that will be consumed by the Message component
     useEffect(()=>{

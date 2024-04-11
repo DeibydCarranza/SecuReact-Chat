@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import io from 'socket.io-client';
 import { useLocation } from "react-router-dom"
-import '../App.css';
 import { ChatsCard } from './ChatsCard.jsx';
 import Message from './Message';
 import { Input } from './Input.jsx';
@@ -87,7 +86,7 @@ export function MessageService() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <Input socketClient={socketClient} userName={user.state.userName} setMessages={setMessages}/>
+          <Input socketClient={socketClient} to={selectedChat} setMessages={setMessages}/>
         </div>
       </div>
     </main>	
