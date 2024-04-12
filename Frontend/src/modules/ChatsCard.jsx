@@ -5,16 +5,21 @@ import '../assets/ChatsCards.css'
 
 export function ChatsCard({user, setSelectedChat,selectedChat}){
   const [background,setBackground] = useState('')
+  // update selectedChat and background of element
   const selectChat = () =>{
     if(background !== ''){
       setBackground("")
     }else{
-      if(selectedChat !== user.from){
-        setBackground("#9500ff")
-        setSelectedChat(user.from)
-      }
+      setBackground("#9500ff")
+      setSelectedChat(user)
     }
   }
+  // update background of element if another element was selected
+  useEffect(()=>{
+    if(selectedChat.from !== user.from){
+      setBackground("")
+    }
+  },[selectedChat])
   return(
     <ul className="section-chats">
         <li className="section-chat-user" onClick={selectChat} style={{backgroundColor:background}}>
