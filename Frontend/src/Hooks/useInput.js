@@ -1,20 +1,24 @@
 import { useState, useEffect } from "react"
 
-export function useInput({socketClient, to}){
+export function useInput({socketClient, selectedChat}){
     const date = new Date()
     const [inputMessage,setInputMessage] = useState('')
     const [banner, setBanner] = useState([])
     useEffect(()=>{
-        socketClient.on("Response",(request)=>copyMessage(request))
+        socketClient.on("Response",(request)=>{
+            
+            copyMessage(request)
+        })
         return ()=>{socketClient.off("Response",(request)=>copyMessage(request))}
     },)
 
     const copyMessage = (inputElement) => {setBanner([...banner,inputElement])}    
     const handleSubmit = (event) => {
         event.preventDefault()
+        console.log(`from: ${selectedChat.socketID}`)
         const message = {
             content:inputMessage,
-            from: to,
+            from: selectedChat.socketID,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }
         socketClient.emit("Request", message)
@@ -25,6 +29,6 @@ export function useInput({socketClient, to}){
     const onChange = (event) => {
         setInputMessage(event.target.value)
     }
-
-    return ({onChange:onChange,handleSubmit:handleSubmit, banner:banner, inputMessage:inputMessage})
+    console.log("CUSTOM HOOK")
+    return ({onChange:onChange,handleSubmit:handleSubmit,setBanner:setBanner, banner:banner, inputMessage:inputMessage})
 }

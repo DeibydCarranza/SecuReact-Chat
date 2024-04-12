@@ -1,21 +1,24 @@
 import { useEffect, useState, useRef } from 'react';
-import io from 'socket.io-client';
+
 import { useLocation } from "react-router-dom"
 import { ChatsCard } from './ChatsCard.jsx';
 import Message from './Message';
 import { Input } from './Input.jsx';
 import { TitleChatCard } from './TitleChatsCard.jsx'
+import io from 'socket.io-client';
 
 const socketClient = io('/');
 
+
 export function MessageService() {
 
-  const [messages,setMessages]=useState([]) 
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [users, setUsers] = useState([]) 
+  const [messages,setMessages]=useState([])                 // {socketID, banner[]}
+  const [selectedChat, setSelectedChat] = useState({});     // {socketID,from}
+  const [users, setUsers] = useState([])                    // {socketID,from}
 	const [userBroadcast, setUsersBroadcast] = useState('') 
   const user = useLocation()
 	const noFirstBroadcast = useRef(false)
+  const [selectedBanner,setBanner] = useState([])           // banner[]
 	
 
   useEffect(()=>{
@@ -49,6 +52,19 @@ export function MessageService() {
 			noFirstBroadcast.current = true
 	},[userBroadcast])
 
+  useEffect(()=>{
+    if(messages.length !== 0){
+      const conversation = messages.find(messageSesion => messageSesion.socketID === selectedChat.socketID)
+      if(conversation){
+        const conversationBanner = conversation.banner 
+        setBanner(conversationBanner)
+      }
+    }
+  },[messages])
+
+  
+  console.log("Banner",selectedBanner)
+  console.log("Array Conversations  ->  ",messages)
   return (
     // Plantilla principal después del inicio de sesión
     <main className="message-main">
@@ -59,14 +75,15 @@ export function MessageService() {
         <div className='module-contact-target'>
           { 
 						(users.length !== 0)  && 
-            users.map((userRegister) => (
+            users.map((user) => (
               <ChatsCard
-                key={userRegister.socketID * userRegister.from}
-                user={userRegister}
+                key={user.socketID*user.from}
+                user={user}
                 // avatar={avatar}
                 // preview={preview}
                 // time={time}
                 setSelectedChat={setSelectedChat}
+                selectedChat={selectedChat}
               ></ChatsCard>
             ))
           }
@@ -76,7 +93,7 @@ export function MessageService() {
       <div className='message-main-conversation'>
         <TitleChatCard selectedChat={selectedChat}/>
         <div className='message-main-conversation-conversation' style={{ overflowY: 'scroll'}}>
-          {messages.map((messages)=>(
+          {selectedBanner.map((messages)=>(
             <Message 
                 key={messages.content+messages.time} 
                 from={messages.from} 
@@ -86,7 +103,7 @@ export function MessageService() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <Input socketClient={socketClient} to={selectedChat} setMessages={setMessages}/>
+          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages}/>
         </div>
       </div>
     </main>	

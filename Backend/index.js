@@ -1,4 +1,5 @@
 import express from 'express'
+import { Console } from 'node:console'
 import {createServer} from 'node:http'
 import {Server as SocketServer} from 'socket.io'
 
@@ -40,6 +41,25 @@ io.on("connection", (socket)=>{
         console.log("\n-----------------------")
 
 
+
+        /*
+            ––––––––––––––––––->
+            ––––––––––––––––––->
+            ––––––––––––––––––->
+            ––––––––––––––––––->
+        */
+        socket.on("GetKeys",(cadena)=>{
+            socket.emit("Keys",{ola:'diego',id:'ifvnfinv'})
+            console.log("------->   "+cadena)
+        })
+
+
+
+
+
+
+
+    
         // to remove user are not connected
         socket.on("disconnect",()=>{
             console.log(`Usuario desconectado ${socket.id}`)
@@ -73,7 +93,7 @@ io.on("connection", (socket)=>{
         socket.on("Request",(messageIncomming)=>{
             console.log("———— Request & Response ————")
             // find socket.id to private message
-            const receiver = findConnection(routingTable,'from',messageIncomming.from)
+            const receiver = findConnection(routingTable,'socketID',messageIncomming.from)
             if (receiver !== undefined) {
                 console.log(`From: ${messageIncomming.from}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
                 io.to(receiver.socketID).emit("Response",messageIncomming)

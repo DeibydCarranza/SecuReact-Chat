@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../assets/Login.css'; 
 
-const ButtonWithSpinner = () => {
+const ButtonWithSpinner = ({socketClient}) => {
     const [count, setCount] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +9,8 @@ const ButtonWithSpinner = () => {
     const [span1Text, setSpan1Text] = useState('');
     const [span2Text, setSpan2Text] = useState('');
 
-    const handleClick = () => {
+    const handleClick = (event) => {
+        event.preventDefault();
         setIsLoading(true);
 
 
@@ -23,8 +24,13 @@ const ButtonWithSpinner = () => {
         }, 2000); 
         
         setCount(count + 1);
-
-    
+        /*
+            ––––––––––––––––––->
+            ––––––––––––––––––->
+            ––––––––––––––––––->
+            ––––––––––––––––––->
+        */
+        socketClient.emit("GetKeys","dame llaves")
         
     };
 

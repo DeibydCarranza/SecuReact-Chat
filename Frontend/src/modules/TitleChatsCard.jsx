@@ -11,7 +11,7 @@ export function TitleChatCard({selectedChat}){
             <FontAwesomeIcon  icon={faUser} />
             {/* <img src={getAvatar()} alt="Avatar" className="contact-avatar" style={{ width: '50px', height: '50px' }} /> */}
             <h2 className='module-contect'>
-                {selectedChat}
+                {selectedChat.from}
             </h2>
         </div>
     )

@@ -1,10 +1,12 @@
 // Login.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Upload } from './Upload';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import  '../assets/Login.css'
 import { useNavigate } from 'react-router-dom'
+import io from 'socket.io-client';
 
+const socketClient = io('/');
 export function Login() {
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
@@ -43,6 +45,19 @@ export function Login() {
         secret: password
     }})
   }
+
+  /*
+      ––––––––––––––––––->
+      ––––––––––––––––––->
+      ––––––––––––––––––->
+      ––––––––––––––––––->
+  */
+  useEffect(()=>{
+    socketClient.on("Keys",(cadena)=>{
+        console.log(cadena)
+    })
+  },[socketClient])
+
 
   return (
     <form className="form_main " onSubmit={handleSumbmit}>
@@ -98,7 +113,7 @@ export function Login() {
               {activeTab === 'generate' && (
                 <>
                   <section className="generate-section">
-                    <ButtonWithSpinner></ButtonWithSpinner>
+                    <ButtonWithSpinner socketClient={socketClient}></ButtonWithSpinner>
                   </section>
                 </>
               )}
