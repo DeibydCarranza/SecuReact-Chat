@@ -30,7 +30,7 @@ const ButtonWithSpinner = ({socketClient}) => {
             ––––––––––––––––––->
             ––––––––––––––––––->
         */
-        socketClient.emit("GetKeys", '')
+        //socketClient.emit("GetKeys", '')
         
     };
 

@@ -4,16 +4,28 @@ import { ChatsCard } from './ChatsCard.jsx';
 import Message from './Message';
 import { Input } from './Input.jsx';
 import { TitleChatCard } from './TitleChatsCard.jsx'
-import io from 'socket.io-client';
+import { useContext } from 'react';
+import { SocketClient } from './SocketClient';
 
-export const socketClient = io('/')
 export function MessageService({users, setUsers}) {
+  const socketClient = useContext(SocketClient)
   const [messages,setMessages]=useState([])                 // {socketID, banner[]}
   const [selectedChat, setSelectedChat] = useState({});     // {socketID,from}
 	const [userBroadcast, setUsersBroadcast] = useState('') 
   const user = useLocation()
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
+  
+  useEffect(()=>{
+    if(user.state.userName !== ''){
+      socketClient.emit("Discover",user.state.userName)
+      socketClient.on("LoggedUsers",(usersTable)=>{
+        if(usersTable.length !== 0)
+          setUsers([...usersTable])
+      })
+      return ()=>{socketClient.off("LoggedUsers",()=>{})}
+    }
+  },[])
 
 	useEffect(()=>{
 		socketClient.on("Broadcast Request",(userInfo)=>{
@@ -21,6 +33,7 @@ export function MessageService({users, setUsers}) {
 		})
 		return ()=>{socketClient.off("Broadcast Request",()=>{})}
 	},[socketClient])
+
 
 	/*
 		avoid executing setUsers the first time the component is 
@@ -32,7 +45,9 @@ export function MessageService({users, setUsers}) {
 		if(!noFirstBroadcast.current)
 			noFirstBroadcast.current = true
 	},[userBroadcast])
-
+  /* 
+    Define el banner de la conversación para que React pueda renderizar el arreglo (banner)
+  */
   useEffect(()=>{
     if(messages.length !== 0){
       const conversation = messages.find(messageSesion => messageSesion.socketID === selectedChat.socketID)
@@ -43,9 +58,10 @@ export function MessageService({users, setUsers}) {
     }
   },[messages])
 
-  console.log("Banner",selectedBanner)
-  console.log("Array Conversations  ->  ",messages)
-  console.log("Users",users)
+  console.log("Current Banner ->\n",selectedBanner)
+  console.log("Conversations  ->\n",messages)
+  console.log("Users          ->\n",users)
+
   return (
     // Plantilla principal después del inicio de sesión
     <main className="message-main">
@@ -60,9 +76,6 @@ export function MessageService({users, setUsers}) {
               <ChatsCard
                 key={user.socketID*user.from}
                 user={user}
-                // avatar={avatar}
-                // preview={preview}
-                // time={time}
                 setSelectedChat={setSelectedChat}
                 selectedChat={selectedChat}
               ></ChatsCard>

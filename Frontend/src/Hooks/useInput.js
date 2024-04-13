@@ -6,13 +6,13 @@ export function useInput({socketClient, selectedChat}){
     const [banner, setBanner] = useState([])
     useEffect(()=>{
         socketClient.on("Response",(request)=>{
+            console.log("*****RECIBI*****")
             copyMessage(request)
         })
         return ()=>{socketClient.off("Response",(request)=>copyMessage(request))}
     },)
 
     const copyMessage = (inputElement) => {
-        console.log("———————————> Recibiste",inputElement)
         setBanner([...banner,inputElement])
     }    
     const handleSubmit = (event) => {

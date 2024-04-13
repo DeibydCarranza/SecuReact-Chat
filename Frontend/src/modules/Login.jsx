@@ -4,41 +4,29 @@ import { Upload } from './Upload';
 import ButtonWithSpinner from './ButtonWithSpinner';
 import  '../assets/Login.css'
 import { useNavigate } from 'react-router-dom'
-import io from 'socket.io-client';
-
-export const socketClient = io('/')
+import { useContext } from 'react';
+import { SocketClient } from './SocketClient';
 
 export function Login({setUsers}) {
+  const socketClient = useContext(SocketClient)
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('generate');
   const [fileNamePrivate, setFileNamePrivate] = useState('');
   const [fileNamePublic, setFileNamePublic] = useState('');
 
-  
-  useEffect(()=>{
-    if(password !== ''){
-      if(userName !== ''){
-        socketClient.emit("Discover",userName)
-        socketClient.on("LoggedUsers",(usersTable)=>{
-          if(usersTable.length !== 0)
-            setUsers([...usersTable])
-        })
-        return ()=>{socketClient.off("LoggedUsers",()=>{})}
-      }
-    }
-  },[userName,password])
+
     /*
       ––––––––––––––––––->
       ––––––––––––––––––->
       ––––––––––––––––––->
       ––––––––––––––––––->
   */
-  useEffect(()=>{
-    socketClient.on("Keys",(cadena)=>{
-        console.log(cadena)
-    })
-  },[socketClient])
+  // useEffect(()=>{
+  //   socketClient.on("Keys",(cadena)=>{
+  //       console.log(cadena)
+  //   })
+  // },[socketClient])
 
   const singIn = useNavigate()
 

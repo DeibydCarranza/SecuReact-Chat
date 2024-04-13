@@ -111,12 +111,20 @@ io.on("connection", (socket)=>{
 			console.log("———— Request & Response ————")
 			// find socket.id to private message
 			const receiver = findConnection(routingTable,'socketID',messageIncomming.from)
+			console.log("Request: ",receiver)
 			if (receiver !== undefined) {
-					console.log(`From: ${messageIncomming.from}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
+					console.log(`From: ${socket.id}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
+					console.log("To: ",receiver.socketID)
+					console.log("–——————————————————————————————")
+					console.log("–——————————————————————————————")
+					console.log("–——————————————————————————————")
+					console.log(routingTable)
+					console.log("–——————————————————————————————")
+					console.log("–——————————————————————————————")
+					console.log("–——————————————————————————————")
 					io.to(receiver.socketID).emit("Response",messageIncomming)
 			}else{
 					console.log(`Error ->  ${messageIncomming.from} not found\n`)
-					console.log(routingTable)
 			}
 	})
 })

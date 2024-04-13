@@ -8,11 +8,12 @@ import * as routing from '../utils/routing.js'
 export function Input({socketClient, selectedChat, setMessages, messages}){
 		// managment Input of form
     const {banner,inputMessage, handleSubmit, onChange, setBanner} = useInput({socketClient,selectedChat})
+
+
     // instantiate conversation inside message array 
     useEffect(()=>{
 			if (Object.keys(selectedChat).length !== 0 ){
 				const connection = routing.checkUserConnection(messages,selectedChat)
-				console.log("—————————> Si esta en tus contectos",connection)
 				if(!connection){
 					setMessages((usersBanner)=>[
 						... usersBanner,{
@@ -27,8 +28,7 @@ export function Input({socketClient, selectedChat, setMessages, messages}){
 		// update conversation
 		useEffect(()=>{
 			if(banner.length !== 0){
-				const historyBanner = routing.updateConnection(messages,selectedChat)
-				console.log("—————————> Update Mensajeria",historyBanner)
+				const historyBanner = routing.updateConnection(messages,selectedChat) // return banner
 				if(historyBanner){
 					setMessages((usersBanner)=>[
 						... usersBanner,{
