@@ -18,18 +18,23 @@ export function MessageService() {
   const user = useLocation()
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
-  const [users, setUsers] = useState([])                    // {socketID,from}
+  const [users, setUsers] = useState([])                    // {socketID,from, publicKey}
 	const [icon, setIcon] = useState(faLock);
   
+  
   useEffect(()=>{
+
     if(user.state.userName !== ''){
-      socketClient.emit("Discover",user.state.userName)
+      socketClient.emit("Discover",{userName: user.state.userName, publicKey: user.state.keys.publicKey})
       socketClient.on("LoggedUsers",(usersTable)=>{
-        if(usersTable.length !== 0)
+        
+        if(usersTable.length !== 0){
           setUsers([...usersTable])
+        }
       })
       return ()=>{socketClient.off("LoggedUsers",()=>{})}
     }
+    
   },[])
 
 	useEffect(()=>{
@@ -77,6 +82,7 @@ export function MessageService() {
   console.log("Conversations  ->\n",messages)
   console.log("Users          ->\n",users)
   console.log("LLaves        ->\n",user.state.keys)
+
   return (
     // Plantilla principal después del inicio de sesión
     <main className="message-main">

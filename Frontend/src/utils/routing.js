@@ -1,5 +1,11 @@
 export function checkUserConnection (routingTable, selectedChat){
-    return routingTable.some(item => item.socketID === selectedChat.socketID)
+    if (!routingTable && !Array.isArray(routingTable) && routingTable.length === 0)
+        throw new Error ('routingTable is not valid parameter')
+    if (!selectedChat || typeof selectedChat !== 'object'||Object.keys(selectedChat).length === 0)
+        throw new Error ('selectedChat is not valid parameter ')
+    const connection = routingTable.some(item => item.socketID === selectedChat.socketID)    
+
+    return connection;
 }
 
 export function getUserConnection (routingTable, selectedChat){

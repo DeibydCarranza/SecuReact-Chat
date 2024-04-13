@@ -11,14 +11,13 @@ const io = new SocketServer(server)
 
 // To take control of connections
 const routingTable = []
-function connection(socketID,from,publicKey,privateKey){
+function connection(socketID,from,publicKey){
     this.socketID = socketID
     this.from = from
 		this.publicKey = publicKey
-		this.privateKey = privateKey
 }
-function addConnection (table,socketID,from){
-    table.push(new connection(socketID,from,'',''))
+function addConnection (table,socketID,from, publicKey){
+    table.push(new connection(socketID,from,publicKey))
 }
 
 // Functions to check status of table
@@ -53,23 +52,10 @@ io.on("connection", (socket)=>{
 			––––––––––––––––––->
 	*/
 	socket.on("GetKeys",()=>{
-			//const receiver = findConnection(routingTable,'socketID',socket.id)
-			//if(receiver !== undefined){
-				//routingTable.splice(routingTable.indexOf(receiver),1)
-				const keys = asymmetric.generateKeyPair()
-				//routingTable.push(new connection(
-				// 	receiver.socketID,
-				// 	receiver.from,
-				// 	keys.publicKey,
-				// 	keys.privateKey
-				// ))
-			//}
+			const keys = asymmetric.generateKeyPair()
 			console.log(keys)
 			socket.emit("Keys",keys)
 	})
-
-
-
 
 
 
@@ -90,12 +76,13 @@ io.on("connection", (socket)=>{
 	socket.on("Discover",(loggedUserName)=>{
 			console.log("———— DISCOVER ————\n\r",loggedUserName)
 			// to prevent identity theft
-			if (!checkConnection(routingTable,loggedUserName)){
+			if (!checkConnection(routingTable,loggedUserName.userName)){
 					socket.emit("LoggedUsers",routingTable)
-					addConnection(routingTable,socket.id,loggedUserName,'','')
+					addConnection(routingTable,socket.id,loggedUserName.userName,loggedUserName.publicKey)
 					socket.broadcast.emit("Broadcast Request",{
 							socketID:socket.id,
-							from: loggedUserName}
+							from: loggedUserName.userName,
+							publicKey: loggedUserName.publicKey}
 					)
 			}else{
 					console.log("Socket is now online")
@@ -111,12 +98,6 @@ io.on("connection", (socket)=>{
 			if (receiver !== undefined) {
 					console.log(`From: ${socket.id}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
 					console.log("To: ",receiver.socketID)
-					console.log("–——————————————————————————————")
-					console.log("–——————————————————————————————")
-					console.log("–——————————————————————————————")
-					console.log(routingTable)
-					console.log("–——————————————————————————————")
-					console.log("–——————————————————————————————")
 					console.log("–——————————————————————————————")
 					io.to(receiver.socketID).emit("Response",messageIncomming)
 			}else{
