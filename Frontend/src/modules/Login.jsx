@@ -6,13 +6,40 @@ import  '../assets/Login.css'
 import { useNavigate } from 'react-router-dom'
 import io from 'socket.io-client';
 
-const socketClient = io('/');
-export function Login() {
+export const socketClient = io('/')
+
+export function Login({setUsers}) {
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
   const [activeTab, setActiveTab] = useState('generate');
   const [fileNamePrivate, setFileNamePrivate] = useState('');
   const [fileNamePublic, setFileNamePublic] = useState('');
+
+  
+  useEffect(()=>{
+    if(password !== ''){
+      if(userName !== ''){
+        socketClient.emit("Discover",userName)
+        socketClient.on("LoggedUsers",(usersTable)=>{
+          if(usersTable.length !== 0)
+            setUsers([...usersTable])
+        })
+        return ()=>{socketClient.off("LoggedUsers",()=>{})}
+      }
+    }
+  },[userName,password])
+    /*
+      ––––––––––––––––––->
+      ––––––––––––––––––->
+      ––––––––––––––––––->
+      ––––––––––––––––––->
+  */
+  useEffect(()=>{
+    socketClient.on("Keys",(cadena)=>{
+        console.log(cadena)
+    })
+  },[socketClient])
+
   const singIn = useNavigate()
 
   const handlePasswordChange = (event) => {
@@ -46,17 +73,7 @@ export function Login() {
     }})
   }
 
-  /*
-      ––––––––––––––––––->
-      ––––––––––––––––––->
-      ––––––––––––––––––->
-      ––––––––––––––––––->
-  */
-  useEffect(()=>{
-    socketClient.on("Keys",(cadena)=>{
-        console.log(cadena)
-    })
-  },[socketClient])
+
 
 
   return (

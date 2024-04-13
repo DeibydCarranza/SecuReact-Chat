@@ -12,7 +12,7 @@ export function Input({socketClient, selectedChat, setMessages, messages}){
     useEffect(()=>{
 			if (Object.keys(selectedChat).length !== 0 ){
 				const connection = routing.checkUserConnection(messages,selectedChat)
-				
+				console.log("—————————> Si esta en tus contectos",connection)
 				if(!connection){
 					setMessages((usersBanner)=>[
 						... usersBanner,{
@@ -27,16 +27,17 @@ export function Input({socketClient, selectedChat, setMessages, messages}){
 		// update conversation
 		useEffect(()=>{
 			if(banner.length !== 0){
-					const historyBanner = routing.updateConnection(messages,selectedChat)
-					if(historyBanner){
-						setMessages((usersBanner)=>[
-							... usersBanner,{
-								socketID: selectedChat.socketID,
-								banner:[...historyBanner,...banner]
-							}]
-						)
-						setBanner([])
-					}
+				const historyBanner = routing.updateConnection(messages,selectedChat)
+				console.log("—————————> Update Mensajeria",historyBanner)
+				if(historyBanner){
+					setMessages((usersBanner)=>[
+						... usersBanner,{
+							socketID: selectedChat.socketID,
+							banner:[...historyBanner,...banner]
+						}]
+					)
+					setBanner([])
+				}
 			}
 		},[banner])
 
@@ -44,7 +45,9 @@ export function Input({socketClient, selectedChat, setMessages, messages}){
     return(
         <form className='module-input' onSubmit={handleSubmit}>
             <input className='module-input-input' type="text" onChange={onChange} value={inputMessage}/>
-            <button className='module-input-button' label='write your message'><FontAwesomeIcon icon={faPaperPlane}/></button>
+            <button className='module-input-button' label='write your message'>
+							<FontAwesomeIcon icon={faPaperPlane}/>
+						</button>
         </form>
     )
 }

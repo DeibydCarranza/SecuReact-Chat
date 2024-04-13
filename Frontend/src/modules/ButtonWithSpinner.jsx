@@ -15,13 +15,13 @@ const ButtonWithSpinner = ({socketClient}) => {
 
 
         // Simulación de generación de llaves 2 segundos de espera
-        setTimeout(() => {
+ 
         setIsLoading(false);
         setRenderKey(renderKey + 1); 
         
         setSpan1Text(`Public key - ${Math.random().toString(36).substring(7)}`);
         setSpan2Text(`Private key - ${Math.random().toString(36).substring(7)}`);
-        }, 2000); 
+  
         
         setCount(count + 1);
         /*
@@ -30,7 +30,7 @@ const ButtonWithSpinner = ({socketClient}) => {
             ––––––––––––––––––->
             ––––––––––––––––––->
         */
-        socketClient.emit("GetKeys","dame llaves")
+        socketClient.emit("GetKeys", '')
         
     };
 

@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react';
-
 import { useLocation } from "react-router-dom"
 import { ChatsCard } from './ChatsCard.jsx';
 import Message from './Message';
@@ -7,32 +6,14 @@ import { Input } from './Input.jsx';
 import { TitleChatCard } from './TitleChatsCard.jsx'
 import io from 'socket.io-client';
 
-const socketClient = io('/');
-
-
-export function MessageService() {
-
+export const socketClient = io('/')
+export function MessageService({users, setUsers}) {
   const [messages,setMessages]=useState([])                 // {socketID, banner[]}
   const [selectedChat, setSelectedChat] = useState({});     // {socketID,from}
-  const [users, setUsers] = useState([])                    // {socketID,from}
 	const [userBroadcast, setUsersBroadcast] = useState('') 
   const user = useLocation()
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
-	
-
-  useEffect(()=>{
-    console.log(`user: ${user.state.userName}\n\r secret: ${user.state.secret}`)
-    if(user.state.userName !== ''){
-      socketClient.emit("Discover",user.state.userName)
-			socketClient.on("LoggedUsers",(usersTable)=>{
-				// case: 1st user connected
-				if(usersTable.length !== 0)
-					setUsers([...usersTable])
-				})
-			return ()=>{socketClient.off("LoggedUsers",()=>{})}
-    }
-  },[])
 
 	useEffect(()=>{
 		socketClient.on("Broadcast Request",(userInfo)=>{
@@ -62,9 +43,9 @@ export function MessageService() {
     }
   },[messages])
 
-  
   console.log("Banner",selectedBanner)
   console.log("Array Conversations  ->  ",messages)
+  console.log("Users",users)
   return (
     // Plantilla principal después del inicio de sesión
     <main className="message-main">
