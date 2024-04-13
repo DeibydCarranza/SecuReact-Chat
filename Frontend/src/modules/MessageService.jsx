@@ -7,7 +7,7 @@ import { TitleChatCard } from './TitleChatsCard.jsx'
 import { useContext } from 'react';
 import { SocketClient } from './SocketClient';
 
-export function MessageService({users, setUsers}) {
+export function MessageService() {
   const socketClient = useContext(SocketClient)
   const [messages,setMessages]=useState([])                 // {socketID, banner[]}
   const [selectedChat, setSelectedChat] = useState({});     // {socketID,from}
@@ -15,6 +15,7 @@ export function MessageService({users, setUsers}) {
   const user = useLocation()
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
+  const [users, setUsers] = useState([])                    // {socketID,from}
   
   useEffect(()=>{
     if(user.state.userName !== ''){

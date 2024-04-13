@@ -6,13 +6,12 @@ import './assets/App.css'
 import { SocketClient } from "./modules/SocketClient"
 import io from 'socket.io-client';
 export function App(){
-  const [users, setUsers] = useState([])                    // {socketID,from}
 
   return(
     <SocketClient.Provider value={io('/')}>
       <Routes>
-        <Route path='/' element={ <Login setUsers={setUsers}/> }/>
-        <Route path='/home/:user' element={ <MessageService setUsers={setUsers} users={users}/> }/>
+        <Route path='/' element={ <Login/> }/>
+        <Route path='/home/:user' element={ <MessageService/> }/>
       </Routes>
     </SocketClient.Provider>
   )

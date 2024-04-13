@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react';
 import { SocketClient } from './SocketClient';
 
-export function Login({setUsers}) {
+export function Login() {
   const socketClient = useContext(SocketClient)
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
@@ -60,9 +60,6 @@ export function Login({setUsers}) {
         secret: password
     }})
   }
-
-
-
 
   return (
     <form className="form_main " onSubmit={handleSumbmit}>
