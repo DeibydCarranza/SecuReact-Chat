@@ -53,21 +53,19 @@ io.on("connection", (socket)=>{
 			––––––––––––––––––->
 	*/
 	socket.on("GetKeys",()=>{
-			console.log("TABLA---------->\n\r",routingTable)
-			const receiver = findConnection(routingTable,'socketID',socket.id)
-			console.log(`——————————— Busqueda ———————————\n\r—————————— ${socket.id} ———————————\n\r${JSON.stringify(receiver)}`)
-			if(receiver !== undefined){
-				routingTable.splice(routingTable.indexOf(receiver),1)
+			//const receiver = findConnection(routingTable,'socketID',socket.id)
+			//if(receiver !== undefined){
+				//routingTable.splice(routingTable.indexOf(receiver),1)
 				const keys = asymmetric.generateKeyPair()
-				routingTable.push(new connection(
-					receiver.socketID,
-					receiver.from,
-					keys.publicKey,
-					keys.privateKey
-				))
-			}
-			console.log("TABLA   \n\n\r",routingTable)
-			socket.emit("Keys",{ola:'diego',id:'ifvnfinv'})
+				//routingTable.push(new connection(
+				// 	receiver.socketID,
+				// 	receiver.from,
+				// 	keys.publicKey,
+				// 	keys.privateKey
+				// ))
+			//}
+			console.log(keys)
+			socket.emit("Keys",keys)
 	})
 
 
@@ -84,10 +82,8 @@ io.on("connection", (socket)=>{
 			console.log(receiver)
 			if(receiver !== undefined){
 					routingTable.splice(routingTable.indexOf(receiver),1)
-					console.log(routingTable)
 			}else{
 					console.log("NO")
-					console.log(routingTable)
 			}
 	})
 

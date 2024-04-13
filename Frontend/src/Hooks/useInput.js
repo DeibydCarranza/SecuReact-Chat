@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
+import * as symmetric from '../utils/encrypt.js'
 
-export function useInput({socketClient, selectedChat}){
+export function useInput({socketClient, selectedChat, secret}){
     const date = new Date()
     const [inputMessage,setInputMessage] = useState('')
     const [banner, setBanner] = useState([])
@@ -18,7 +19,7 @@ export function useInput({socketClient, selectedChat}){
     const handleSubmit = (event) => {
         event.preventDefault()
         const message = {
-            content:inputMessage,
+            content:symmetric.encryptMessage(secret,inputMessage),
             from: selectedChat.socketID,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }

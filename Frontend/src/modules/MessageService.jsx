@@ -6,6 +6,9 @@ import { Input } from './Input.jsx';
 import { TitleChatCard } from './TitleChatsCard.jsx'
 import { useContext } from 'react';
 import { SocketClient } from './SocketClient';
+import * as symmetric from '../utils/encrypt.js'
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
+import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 
 export function MessageService() {
   const socketClient = useContext(SocketClient)
@@ -16,6 +19,7 @@ export function MessageService() {
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
   const [users, setUsers] = useState([])                    // {socketID,from}
+	const [icon, setIcon] = useState(faLock);
   
   useEffect(()=>{
     if(user.state.userName !== ''){
@@ -59,10 +63,20 @@ export function MessageService() {
     }
   },[messages])
 
+  const handleIconChange = () => {
+    const newIcon = icon === faLock ? faLockOpen : faLock;
+    setIcon(newIcon);
+    
+    if (newIcon === faLock) {
+      symmetric.encryptMessages(messages,user.state.secret,selectedChat);
+    } else {
+      symmetric.decrypt(messages,user.state.secret,selectedChat);
+    }
+  };
   console.log("Current Banner ->\n",selectedBanner)
   console.log("Conversations  ->\n",messages)
   console.log("Users          ->\n",users)
-
+  console.log("LLaves        ->\n",user.state.keys)
   return (
     // Plantilla principal después del inicio de sesión
     <main className="message-main">
@@ -98,7 +112,7 @@ export function MessageService() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages}/>
+          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages} handleIconChange={handleIconChange} icon={icon} secret={user.state.secret}/>
         </div>
       </div>
     </main>	

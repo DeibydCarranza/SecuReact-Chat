@@ -11,22 +11,18 @@ export function Login() {
   const socketClient = useContext(SocketClient)
   const [password, setPassword] = useState('');
   const [userName, setUserName] = useState('');
+  const [keys, setKeys] = useState({});
   const [activeTab, setActiveTab] = useState('generate');
   const [fileNamePrivate, setFileNamePrivate] = useState('');
   const [fileNamePublic, setFileNamePublic] = useState('');
 
 
-    /*
-      ––––––––––––––––––->
-      ––––––––––––––––––->
-      ––––––––––––––––––->
-      ––––––––––––––––––->
-  */
-  // useEffect(()=>{
-  //   socketClient.on("Keys",(cadena)=>{
-  //       console.log(cadena)
-  //   })
-  // },[socketClient])
+
+  useEffect(()=>{
+    socketClient.on("Keys",(keys)=>{
+        setKeys(keys);
+    })
+  },[socketClient])
 
   const singIn = useNavigate()
 
@@ -57,7 +53,8 @@ export function Login() {
     if (userName && password)
       singIn(`/home/${userName}`, {state:{
         userName:userName,
-        secret: password
+        secret: password,
+        keys: keys
     }})
   }
 
