@@ -1,43 +1,55 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from "react-router-dom"
 import '../assets/Login.css'; 
 
 const ButtonWithSpinner = ({socketClient}) => {
-    const [count, setCount] = useState(0);
 
     const [isLoading, setIsLoading] = useState(false);
     const [renderKey, setRenderKey] = useState(0); 
     const [span1Text, setSpan1Text] = useState('');
     const [span2Text, setSpan2Text] = useState('');
+    const [keys, setKeys] = useState(null);
 
-    const handleClick = (event) => {
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    useEffect(() => {
+        socketClient.on("Keys", (keysFromServer) => {
+          setKeys(keysFromServer);
+        });
+    
+        return () => {
+          socketClient.off("Keys"); 
+        };
+      }, [socketClient]);
+    
+    useEffect(() => {
+        if (keys) {
+            setSpan1Text(keys.publicKey); 
+            setSpan2Text(keys.privateKey); 
+        }
+    }, [keys]);
+
+    const handleClick = async(event) => {
         event.preventDefault();
         setIsLoading(true);
-
-
-        // Simulación de generación de llaves 2 segundos de espera
+        
+        await sleep(500);
+        socketClient.emit("GetKeys", '')
  
         setIsLoading(false);
         setRenderKey(renderKey + 1); 
         
-        setSpan1Text(`Public key - ${Math.random().toString(36).substring(7)}`);
-        setSpan2Text(`Private key - ${Math.random().toString(36).substring(7)}`);
-  
-        
-        setCount(count + 1);
-        /*
-            ––––––––––––––––––->
-            ––––––––––––––––––->
-            ––––––––––––––––––->
-            ––––––––––––––––––->
-        */
-        socketClient.emit("GetKeys", '')
-        
+    };
+    
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
     };
 
-  
+    console.log("LLAVES DESDE BOTON SPINNER ->\n", keys);
+
     return (
         <div className="button-container">
-            <div className="center-item">
+            <div className="center-item-b">
                 <button className="custom-button" onClick={handleClick}>
                 {isLoading ? (
                 <span className="spinner" />
@@ -49,14 +61,19 @@ const ButtonWithSpinner = ({socketClient}) => {
             </button>
             </div>
             
-
-
-
-
-            
-            <div className="spans-container center-item" key={renderKey}>
-                <span>{span1Text}</span>
-                <span>{span2Text}</span>
+            <div className="spans-container" key={renderKey}>
+                {keys && (
+                    <div className="code-container ">
+                        <div className="key-container">
+                            <pre className="key-text">{span1Text}</pre>
+                            <button className="copy-button" onClick={() => copyToClipboard(span1Text)} type="button">Copy</button>
+                        </div>
+                        <div className="key-container">
+                            <pre className="key-text">{span2Text}</pre>
+                            <button className="copy-button" onClick={() => copyToClipboard(span2Text)} type="button">Copy</button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
