@@ -107,7 +107,7 @@ export function MessageService() {
 
       <div className='message-main-conversation'>
         <TitleChatCard selectedChat={selectedChat}/>
-        <div className='message-main-conversation-conversation' style={{ overflowY: 'scroll'}}>
+        <div className='message-main-conversation-conversation'>
           {selectedBanner.map((messages)=>(
             <Message 
                 key={messages.content+messages.time} 

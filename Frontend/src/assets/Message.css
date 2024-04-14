@@ -1,55 +1,73 @@
 /*Mensaje enviado por el otro*/
 .module-message{
-    max-width: 70%;
-    margin: 10px;
-    padding: 5px;
+    padding: 10px 10px;
     border-radius: 15px;
-    box-sizing: border-box;
+    box-sizing:border-box;
     background-color: #f0f0f0;
-    position: relative;
-    
+    height: min-content;
+    width: fit-content;
+    max-width: 60%;
+    min-width: min-content;
 }
 
 .module-message .message{
-    font-size: 16px;
-    padding: 2px;
+    width: 100%;
+    margin:0%;
+    font-size:medium;
     color: #333;
-    line-height: 1.0;
     direction: ltr;
 }
 
 .module-message .hora{
+    margin:0%;
     font-size: 11px;
     color: #666;
-    position: absolute;
-    bottom: -3px;
-    right: 10px;
+    text-align: left;
 }
 
 /*Estilo mensajes enviados por mi*/
 .module-message-me{
-    max-width: 70%;
-    margin: 10px;
-    padding: 5px;
+    padding: 10px 10px;
     border-radius: 15px;
-    box-sizing: border-box;
+    box-sizing:border-box;
     background-color: #7d36b0;
-    position: relative;
-    left: 25%;
+    align-self: flex-end;
+    height: min-content;
+    width: fit-content;
+    max-width: 60%;
+    min-width: min-content;
 }
-  
 .module-message-me .message{
-    font-size: 18px;
-    padding: 2px;
+    margin:0%;
+    font-size: medium;
     color: #fff;
-    line-height: 1.0;
     direction: rtl;
 }
-  
-.module-message-me .hora{
+
+.div-request{
+    display: flex;
+    flex-direction: column;
+}
+
+.div-request .hora{
+    margin:0%;
+    padding: 1%;
     font-size: 11px;
     color: #e0d4d4;
-    position: absolute;
     bottom: -3px;
-    right: 10px;
+    text-align: right;
+}
+
+.div-response{
+    display: flex;
+    flex-direction: column;
+}
+
+.div-response .hora{
+    margin:0%;
+    padding: 1%;
+    font-size: 11px;
+    color: #e0d4d4;
+    bottom: -3px;
+    text-align: left;
 }
