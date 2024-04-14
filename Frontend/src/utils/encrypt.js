@@ -5,8 +5,8 @@ export function  encryptMessages (messages,secret, selectedChat){
     const connectionBanner = routing.getUserConnection(messages,selectedChat)
     if (connectionBanner){
 			connectionBanner.banner.map((message)=>{
-				message.content=CryptoJS.AES.encrypt(message.content,secret).toString();
-				console.log(message.content)
+				message.content.mensaje=CryptoJS.AES.encrypt(message.content.mensaje,secret).toString();
+				console.log(message.content.mensaje)
 			})
     }
 };
@@ -19,9 +19,9 @@ export function decrypt (messages,secret,selectedChat){
 		console.log(connectionBanner.banner)
 		if(connectionBanner){
 			connectionBanner.banner.map((message)=>{
-				var bytes=CryptoJS.AES.decrypt(message.content,secret);
-				message.content=bytes.toString(CryptoJS.enc.Utf8);
-				console.log(message.content)
+				var bytes=CryptoJS.AES.decrypt(message.content.mensaje,secret);
+				message.content.mensaje=bytes.toString(CryptoJS.enc.Utf8);
+				console.log(message.content.mensaje)
 			})
 		}
 };

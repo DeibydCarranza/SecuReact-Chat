@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import CryptoJS from "crypto-js"; 
 
 export function generateKeyPair() {
 	const { publicKey, privateKey } = crypto.generateKeyPairSync('rsa', {
@@ -42,3 +43,11 @@ export function validate_sign(message, sign, publicKey){
 	);
 	return isVerified;
 }
+
+
+export function decrypt (message,secret){
+	var bytes=CryptoJS.AES.decrypt(message,secret);
+	message=bytes.toString(CryptoJS.enc.Utf8);
+	return message;
+};
+

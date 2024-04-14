@@ -136,14 +136,15 @@ io.on("connection", (socket)=>{
 			console.log("EL mensaje keys", Object.keys(messageIncomming))
 			// find socket.id to private message
 			const receiver = findConnection(routingTable,'socketID',messageIncomming.from)
-			const digital_sig = findConnection(routingTable,'socketID',socket.id)?.privateKey
+			const digital_sig = findConnection(routingTable,'socketID',socket.id)
 			console.log(digital_sig)
 			console.log("Request: ",receiver)
 			if (receiver !== undefined) {
 					console.log(`From: ${socket.id}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
 					console.log("To: ",receiver.socketID)
 					console.log("–——————————————————————————————")
-					const sign = asymmetric.signature(messageIncomming.content.mensaje,digital_sig)
+					const clare_text = asymmetric.decrypt(messageIncomming.content.mensaje,digital_sig.secret)
+					const sign = asymmetric.signature(clare_text,digital_sig.privateKey)
 					messageIncomming.content.signature = sign
 					console.log("Firma -->", messageIncomming.content.signature)
 					io.to(receiver.socketID).emit("Response",messageIncomming)
