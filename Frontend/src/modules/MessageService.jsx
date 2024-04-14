@@ -9,23 +9,24 @@ import { SocketClient } from './SocketClient';
 import * as symmetric from '../utils/encrypt.js'
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
+import * as synchronize from '../utils/synchronize.js'
 
 export function MessageService() {
   const socketClient = useContext(SocketClient)
   const [messages,setMessages]=useState([])                 // {socketID, banner[]}
-  const [selectedChat, setSelectedChat] = useState({});     // {socketID,from}
+  const [selectedChat, setSelectedChat] = useState({})     // {socketID,from}
 	const [userBroadcast, setUsersBroadcast] = useState('') 
   const user = useLocation()
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
   const [users, setUsers] = useState([])                    // {socketID,from, publicKey}
-	const [icon, setIcon] = useState(faLock);
-  
+	const [icon, setIcon] = useState(faLock)
+  const [solicit, setSolicit] = useState(false)  
   
   useEffect(()=>{
 
     if(user.state.userName !== ''){
-      socketClient.emit("Discover",{userName: user.state.userName, publicKey: user.state.keys.publicKey})
+      socketClient.emit("Discover",{userName: user.state.userName, publicKey: user.state.keys.publicKey, secret:user.state.secret})
       socketClient.on("LoggedUsers",(usersTable)=>{
         
         if(usersTable.length !== 0){
@@ -68,6 +69,23 @@ export function MessageService() {
     }
   },[messages])
 
+  useEffect(()=>{
+    const selectSecret = async()=>{
+      socketClient.emit("SOLICIT",selectedChat.socketID)
+      const responseSecret = await synchronize.waitAdvertise(socketClient,"ADVERTISE") 
+      if (responseSecret === user.state.secret){
+        console.log("cifro con mi secreto ",responseSecret)
+      }else{
+        console.log("cifro con el secreto ",responseSecret)
+      }
+    }
+
+    if(JSON.stringify(selectedChat) !== '{}'){
+      selectSecret()
+      setSolicit(true) 
+    }
+  },[selectedChat])
+
   const handleIconChange = () => {
     const newIcon = icon === faLock ? faLockOpen : faLock;
     setIcon(newIcon);
@@ -82,6 +100,7 @@ export function MessageService() {
   console.log("Conversations  ->\n",messages)
   console.log("Users          ->\n",users)
   console.log("LLaves        ->\n",user.state.keys)
+  console.log("Selected Chat ->\n",selectedChat)
 
   return (
     // Plantilla principal después del inicio de sesión
@@ -107,7 +126,7 @@ export function MessageService() {
 
       <div className='message-main-conversation'>
         <TitleChatCard selectedChat={selectedChat}/>
-        <div className='message-main-conversation-conversation' style={{ overflowY: 'scroll'}}>
+        <div className='message-main-conversation-conversation'>
           {selectedBanner.map((messages)=>(
             <Message 
                 key={messages.content+messages.time} 
@@ -118,7 +137,7 @@ export function MessageService() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages} handleIconChange={handleIconChange} icon={icon} secret={user.state.secret}/>
+          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages} handleIconChange={handleIconChange} icon={icon} secret={user.state.secret} solicit={solicit}/>
         </div>
       </div>
     </main>	
