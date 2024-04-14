@@ -15,13 +15,23 @@ export function Login() {
   const [activeTab, setActiveTab] = useState('generate');
   const [fileNamePrivate, setFileNamePrivate] = useState('');
   const [fileNamePublic, setFileNamePublic] = useState('');
+  const [keysUpload, setKeysUpload] = useState([]);
+  const [backendKeysReceived, setBackendKeysReceived] = useState(false);
+  const [keysGenerateButton, setKeysGenerateButton] = useState(false);
 
 
   useEffect(()=>{
-    socketClient.on("Keys",(keys)=>{
+    if (keysUpload.length === 2 && backendKeysReceived && !keysGenerateButton) {
+      const datos = {
+        publicKey: keysUpload[0].publicKey, privateKey: keysUpload[1].privateKey
+      }
+      setKeys( datos );
+    }else{
+      socketClient.on("Keys",(keys)=>{
         setKeys(keys);
-    })
-  },[socketClient])
+      })
+    }
+  },[socketClient, keysUpload, backendKeysReceived])
 
   const singIn = useNavigate()
 
@@ -41,14 +51,42 @@ export function Login() {
   // File events
   const handleFilePrivate = (file) => {
     setFileNamePrivate(file.file.name);
+    
+    const privateKeyObj = {
+      privateKey: file.contents,
+    };
+    
+    const existingIndex = keysUpload.findIndex(obj => 'privateKey' in obj);
+    
+    if (existingIndex !== -1) {
+      const updatedKeysUpload = [...keysUpload];
+      updatedKeysUpload[existingIndex] = privateKeyObj;
+      setKeysUpload(updatedKeysUpload);
+    } else {
+      setKeysUpload([...keysUpload, privateKeyObj]);
+    }
     console.log("FILE PRIVATE   ", file.contents);
   };
 
   const handleFilePublic = (file) => {
     setFileNamePublic(file.file.name);
+    
+    const publicKeyObj = {
+      publicKey: file.contents,
+    };
+    
+    const existingIndex = keysUpload.findIndex(obj => 'publicKey' in obj);
+    
+    if (existingIndex !== -1) {
+      const updatedKeysUpload = [...keysUpload];
+      updatedKeysUpload[existingIndex] = publicKeyObj;
+      setKeysUpload(updatedKeysUpload);
+    } else {
+      setKeysUpload([...keysUpload, publicKeyObj]);
+    }
     console.log("FILE PUBLIC   ", file.contents);
   };
-
+  
   const handleSumbmit = (event)=>{
     event.preventDefault()
     if (userName && password)
@@ -113,7 +151,7 @@ export function Login() {
               {activeTab === 'generate' && (
                 <>
                   <section className="generate-section">
-                    <ButtonWithSpinner socketClient={socketClient}></ButtonWithSpinner>
+                    <ButtonWithSpinner socketClient={socketClient} setKeysGenerateButton={setKeysGenerateButton} ></ButtonWithSpinner>
                   </section>
                 </>
               )}
@@ -122,12 +160,12 @@ export function Login() {
               {activeTab === 'upload' && (
                 <section className="upload-section">
                   <div className="upload-components name-upload">
-                    <Upload handleFile={handleFilePublic} typeCri="Public" />
+                    <Upload handleFile={handleFilePublic} setBackendKeysReceived={setBackendKeysReceived} setKeysGenerateButton={setKeysGenerateButton} typeCri="Public" />
                     {fileNamePublic ? <p>Public Key: {fileNamePublic}</p> :  <span >Select a file</span>}
                   </div>
 
                   <div className="upload-components name-upload">
-                    <Upload handleFile={handleFilePrivate} typeCri="Private" />
+                    <Upload handleFile={handleFilePrivate} setBackendKeysReceived={setBackendKeysReceived} setKeysGenerateButton={setKeysGenerateButton} typeCri="Private" />
                     {fileNamePrivate ? <p>Private Key: {fileNamePrivate}</p> : <span>Select a file</span>}
                   </div>
                 </section>
