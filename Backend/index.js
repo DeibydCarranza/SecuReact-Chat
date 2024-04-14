@@ -143,10 +143,12 @@ io.on("connection", (socket)=>{
 					console.log(`From: ${socket.id}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
 					console.log("To: ",receiver.socketID)
 					console.log("–——————————————————————————————")
-					const clare_text = asymmetric.decrypt(messageIncomming.content.mensaje,digital_sig.secret)
-					const sign = asymmetric.signature(clare_text,digital_sig.privateKey)
+					// const clare_text = asymmetric.decrypt(messageIncomming.content.mensaje,digital_sig.secret)
+					const sign = asymmetric.signature(messageIncomming.content.mensaje,digital_sig.privateKey,digital_sig.secret)
 					messageIncomming.content.signature = sign
-					console.log("Firma -->", messageIncomming.content.signature)
+					messageIncomming.integrity = asymmetric.validate_sign(messageIncomming.content.mensaje,sign,digital_sig.publicKey,digital_sig.secret)
+					console.log("Firma --> ", messageIncomming.content.signature)
+					console.log("Integridad? --> ", messageIncomming.integrity)
 					io.to(receiver.socketID).emit("Response",messageIncomming)
 			}else{
 					console.log(`Error ->  ${messageIncomming.from} not found\n`)

@@ -22,7 +22,7 @@ export function useInput({socketClient, selectedChat, secret}){
 						content:{mensaje:symmetric.encryptMessage(secret,inputMessage),signature:''},
             from: selectedChat.socketID,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`,
-						integrity: true
+						integrity: false
         }
         console.log("<——————————— Enviaste",message)
         socketClient.emit("Request", message)

@@ -16,11 +16,12 @@ export function generateKeyPair() {
   return { publicKey, privateKey };
 }
 
-export function signature(message, privateKey) {
+export function signature(message, privateKey, secret) {
+	const decrypted_message = decrypt(message,secret)
 	console.log("message - signature",message)
 	const sign = crypto.sign(
     'sha256',
-    Buffer.from(message, 'utf8'),
+    Buffer.from(decrypted_message, 'utf8'),
     {
         key: privateKey,
         padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
@@ -30,10 +31,12 @@ export function signature(message, privateKey) {
 	return sign;
 }
 
-export function validate_sign(message, sign, publicKey){
+export function validate_sign(message, sign, publicKey,secret){
+	const decrypted_message = decrypt(message,secret)
+	console.log("mensage decrypted_message", decrypted_message)
 	const isVerified = crypto.verify(
     'sha256',
-    Buffer.from(message, 'utf8'),
+    Buffer.from(decrypted_message, 'utf8'),
     {
         key: publicKey,
         padding: crypto.constants.RSA_PKCS1_PSS_PADDING,
@@ -41,7 +44,7 @@ export function validate_sign(message, sign, publicKey){
     },
     sign
 	);
-	return isVerified;
+	return isVerified; // True or false
 }
 
 
