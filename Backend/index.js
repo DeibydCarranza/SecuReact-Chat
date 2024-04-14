@@ -11,13 +11,52 @@ const io = new SocketServer(server)
 
 // To take control of connections
 const routingTable = []
-function connection(socketID,from,publicKey){
+function connection(socketID,from,publicKey,solicitFlag,secret){
     this.socketID = socketID
     this.from = from
 		this.publicKey = publicKey
+	this.solicitFlag = solicitFlag		// {flag,time}
+	this.secret = secret
 }
-function addConnection (table,socketID,from, publicKey){
-    table.push(new connection(socketID,from,publicKey))
+function addConnection (table,socketID,from, publicKey,secret){
+    table.push(new connection(socketID,from,publicKey,{
+		flag:false,time:''
+	},secret))
+}
+function setSolicitFlag (table, sockedID,time){
+	const connection = findConnection(table,'socketID',sockedID)
+	if(connection && connection.solicitFlag.flag === false){
+		connection.solicitFlag = {flag:true, time:time}
+		routingTable.splice(routingTable.indexOf(connection),1)
+		routingTable.push(connection)
+	}
+	console.log("SETSolicitFlag\n",routingTable)
+}
+function checkSolicitFlag(table,sockedID){
+	const connection = findConnection(table,'socketID',sockedID)
+	if(connection){
+		return connection.solicitFlag
+	}
+}
+
+function determineFirstSolicit(receiber,source){
+	if(receiber.solicitFlag.time > source.solicitFlag.time){
+		return source.secret
+	}else{
+		return receiber.secret
+	}
+}
+function getSecretConversation(table,source,receiber){
+	const receiberConnection = findConnection(table,'socketID',receiber)
+	const sourceConnection = findConnection(table,'socketID',source)
+	// if you are the only one that solicit the conversation
+	if(receiberConnection && receiberConnection.solicitFlag.flag === false){
+		console.log("La tuya")
+		return sourceConnection.secret
+	}else if(receiberConnection && receiberConnection.solicitFlag.flag === true){
+		console.log("La de él")
+		return determineFirstSolicit(receiberConnection,sourceConnection)
+	}
 }
 
 // Functions to check status of table
@@ -74,16 +113,17 @@ io.on("connection", (socket)=>{
 	})
 
 	socket.on("Discover",(loggedUserName)=>{
-			console.log("———— DISCOVER ————\n\r",loggedUserName)
+			console.log("———— DISCOVER ————\n\r",loggedUserName) // loggedUserName = {userName, publicKey, secret}
 			// to prevent identity theft
 			if (!checkConnection(routingTable,loggedUserName.userName)){
 					socket.emit("LoggedUsers",routingTable)
-					addConnection(routingTable,socket.id,loggedUserName.userName,loggedUserName.publicKey)
+					addConnection(routingTable,socket.id,loggedUserName.userName,loggedUserName.publicKey,loggedUserName.secret)
 					socket.broadcast.emit("Broadcast Request",{
 							socketID:socket.id,
 							from: loggedUserName.userName,
 							publicKey: loggedUserName.publicKey}
 					)
+					console.log(routingTable)
 			}else{
 					console.log("Socket is now online")
 			}
@@ -103,6 +143,14 @@ io.on("connection", (socket)=>{
 			}else{
 					console.log(`Error ->  ${messageIncomming.from} not found\n`)
 			}
+	})
+
+	socket.on("SOLICIT", (socketReceiber)=>{
+		const time = new Date()
+		setSolicitFlag(routingTable,socket.id,time)
+		const secret = getSecretConversation(routingTable,socket.id,socketReceiber)
+		console.log(`<----Solicit----   ${socket.id}\n\r --${secret}-->`)
+		socket.emit("ADVERTISE",secret)
 	})
 })
 

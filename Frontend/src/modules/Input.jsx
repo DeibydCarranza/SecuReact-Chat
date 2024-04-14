@@ -6,7 +6,7 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 
 
-export function Input({socketClient, selectedChat, setMessages, messages,handleIconChange,icon,secret}){
+export function Input({socketClient, selectedChat, setMessages, messages,handleIconChange,icon,secret,solicit}){
 		// managment Input of form
     const {banner,inputMessage, handleSubmit, onChange, setBanner} = useInput({socketClient,selectedChat,secret})
 
@@ -42,17 +42,22 @@ export function Input({socketClient, selectedChat, setMessages, messages,handleI
 			}
 		},[banner])
 
-
+	
     return(
-        <form className='module-input' onSubmit={handleSubmit}>
-            <input className='module-input-input' type="text" onChange={onChange} value={inputMessage}/>
-            <button className='module-input-button' label='write your message'>
-							<FontAwesomeIcon icon={faPaperPlane}/>
-			</button>
-			<button className='module-encrypt-decrypt-button' type='button' label='e-d your message' onClick={() => handleIconChange()}>
-                    <FontAwesomeIcon icon={icon}/> 
-            </button>
-        </form>
+		<>
+			{solicit &&
+			<form className='module-input' onSubmit={handleSubmit}>
+				<input className='module-input-input' type="text" onChange={onChange} value={inputMessage}/>
+				<button className='module-input-button' label='write your message'>
+								<FontAwesomeIcon icon={faPaperPlane}/>
+				</button>
+				<button className='module-encrypt-decrypt-button' type='button' label='e-d your message' onClick={() => handleIconChange()}>
+						<FontAwesomeIcon icon={icon}/> 
+				</button>
+        	</form>
+
+			}
+		</>
     )
 }
 
