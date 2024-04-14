@@ -17,7 +17,6 @@ export function Login() {
   const [fileNamePublic, setFileNamePublic] = useState('');
 
 
-
   useEffect(()=>{
     socketClient.on("Keys",(keys)=>{
         setKeys(keys);
@@ -41,11 +40,13 @@ export function Login() {
 
   // File events
   const handleFilePrivate = (file) => {
-    setFileNamePrivate(file.name);
+    setFileNamePrivate(file.file.name);
+    console.log("FILE PRIVATE   ", file.contents);
   };
 
   const handleFilePublic = (file) => {
-    setFileNamePublic(file.name);
+    setFileNamePublic(file.file.name);
+    console.log("FILE PUBLIC   ", file.contents);
   };
 
   const handleSumbmit = (event)=>{
@@ -121,13 +122,13 @@ export function Login() {
               {activeTab === 'upload' && (
                 <section className="upload-section">
                   <div className="upload-components name-upload">
-                    <Upload handleFile={handleFilePrivate} typeCri="Private" />
-                    {fileNamePrivate ? <p>Private Key: {fileNamePrivate}</p> : <span>Select a file</span>}
+                    <Upload handleFile={handleFilePublic} typeCri="Public" />
+                    {fileNamePublic ? <p>Public Key: {fileNamePublic}</p> :  <span >Select a file</span>}
                   </div>
 
                   <div className="upload-components name-upload">
-                    <Upload handleFile={handleFilePublic} typeCri="Public" />
-                    {fileNamePublic ? <p>Public Key: {fileNamePublic}</p> :  <span >Select a file</span>}
+                    <Upload handleFile={handleFilePrivate} typeCri="Private" />
+                    {fileNamePrivate ? <p>Private Key: {fileNamePrivate}</p> : <span>Select a file</span>}
                   </div>
                 </section>
               )}

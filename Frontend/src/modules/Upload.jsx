@@ -6,13 +6,28 @@ export const Upload = ({ handleFile ,typeCri}) => {
     const hiddenFileInput = useRef(null);
 
     const handleClick = (event) => {
+        event.preventDefault();
         hiddenFileInput.current.click();
     };
     
-    const handleChange = (event) => {
+    const handleChange = async (event) => {
         const fileUploaded = event.target.files[0];
-        handleFile(fileUploaded);
-    };
+        const fileContents = await readFileContents(fileUploaded);
+        handleFile({ file: fileUploaded, contents: fileContents });
+      };
+
+    const readFileContents = (file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const contents = event.target.result;
+            resolve(contents);
+          };
+          reader.onerror = (error) => reject(error);
+          reader.readAsText(file);
+        });
+      };
+
     return (
         <>
             <button 
