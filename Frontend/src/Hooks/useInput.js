@@ -19,7 +19,7 @@ export function useInput({socketClient, selectedChat, secret}){
     const handleSubmit = (event) => {
         event.preventDefault()
         const message = {
-            content:symmetric.encryptMessage(secret,inputMessage),
+						content:{mensaje:symmetric.encryptMessage(secret,inputMessage),signature:''},
             from: selectedChat.socketID,
             time: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
         }

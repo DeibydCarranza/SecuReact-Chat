@@ -26,7 +26,7 @@ export function MessageService() {
   useEffect(()=>{
 
     if(user.state.userName !== ''){
-      socketClient.emit("Discover",{userName: user.state.userName, publicKey: user.state.keys.publicKey, secret:user.state.secret})
+      socketClient.emit("Discover",{userName: user.state.userName, publicKey: user.state.keys.publicKey, privateKey: user.state.keys.privateKey,secret:user.state.secret})
       socketClient.on("LoggedUsers",(usersTable)=>{
         
         if(usersTable.length !== 0){

@@ -11,15 +11,16 @@ const io = new SocketServer(server)
 
 // To take control of connections
 const routingTable = []
-function connection(socketID,from,publicKey,solicitFlag,secret){
+function connection(socketID,from,publicKey,privateKey,solicitFlag,secret){
     this.socketID = socketID
     this.from = from
 		this.publicKey = publicKey
-	this.solicitFlag = solicitFlag		// {flag,time}
-	this.secret = secret
+		this.privateKey = privateKey
+		this.solicitFlag = solicitFlag		// {flag,time}
+		this.secret = secret
 }
-function addConnection (table,socketID,from, publicKey,secret){
-    table.push(new connection(socketID,from,publicKey,{
+function addConnection (table,socketID,from, publicKey,privateKey,secret){
+    table.push(new connection(socketID,from,publicKey,privateKey,{
 		flag:false,time:''
 	},secret))
 }
@@ -117,7 +118,7 @@ io.on("connection", (socket)=>{
 			// to prevent identity theft
 			if (!checkConnection(routingTable,loggedUserName.userName)){
 					socket.emit("LoggedUsers",routingTable)
-					addConnection(routingTable,socket.id,loggedUserName.userName,loggedUserName.publicKey,loggedUserName.secret)
+					addConnection(routingTable,socket.id,loggedUserName.userName,loggedUserName.publicKey,loggedUserName.privateKey,loggedUserName.secret)
 					socket.broadcast.emit("Broadcast Request",{
 							socketID:socket.id,
 							from: loggedUserName.userName,
@@ -132,13 +133,19 @@ io.on("connection", (socket)=>{
 
 	socket.on("Request",(messageIncomming)=>{
 			console.log("———— Request & Response ————")
+			console.log("EL mensaje keys", Object.keys(messageIncomming))
 			// find socket.id to private message
 			const receiver = findConnection(routingTable,'socketID',messageIncomming.from)
+			const digital_sig = findConnection(routingTable,'socketID',socket.id)?.privateKey
+			console.log(digital_sig)
 			console.log("Request: ",receiver)
 			if (receiver !== undefined) {
 					console.log(`From: ${socket.id}\n\rTo:${receiver.from}\n\r${messageIncomming.content}\n\r-----------------------\n\n`)
 					console.log("To: ",receiver.socketID)
 					console.log("–——————————————————————————————")
+					const sign = asymmetric.signature(messageIncomming.content.mensaje,digital_sig)
+					messageIncomming.content.signature = sign
+					console.log("Firma -->", messageIncomming.content.signature)
 					io.to(receiver.socketID).emit("Response",messageIncomming)
 			}else{
 					console.log(`Error ->  ${messageIncomming.from} not found\n`)

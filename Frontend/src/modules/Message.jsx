@@ -11,7 +11,7 @@ function Message ({texto, from, hora}){
     return (
        <div className={divMessage}>
             <div className={msgClassName}>
-                <p className='message'>{texto}</p>
+                <p className='message'>{texto.mensaje}</p>
             </div>
             <p className='hora'>{hora}</p>
        </div> 
