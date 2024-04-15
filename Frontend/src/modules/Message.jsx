@@ -1,6 +1,9 @@
+import { useState } from 'react'
 import '../assets/Message.css'
 
 function Message ({texto, from, hora}){
+
+    
     const msgClassName = (from == 'Me') ? 
         'module-message-me' :
         'module-message'
@@ -8,6 +11,7 @@ function Message ({texto, from, hora}){
     const divMessage = (from == 'Me') ? 
         'div-request' :
         'div-response'
+
     return (
        <div className={divMessage}>
             <div className={msgClassName}>

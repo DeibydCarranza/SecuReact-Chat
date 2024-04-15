@@ -11,6 +11,7 @@ const io = new SocketServer(server)
 
 // To take control of connections
 const routingTable = []
+const broadcastTable = []
 function connection(socketID,from,publicKey,privateKey,solicitFlag,secret){
     this.socketID = socketID
     this.from = from
@@ -19,11 +20,22 @@ function connection(socketID,from,publicKey,privateKey,solicitFlag,secret){
 		this.solicitFlag = solicitFlag		// {flag,time}
 		this.secret = secret
 }
+
+function broadcastUser(socketID,from,publicKey){
+	this.socketID = socketID
+    this.from = from
+	this.publicKey = publicKey
+}
 function addConnection (table,socketID,from, publicKey,privateKey,secret){
     table.push(new connection(socketID,from,publicKey,privateKey,{
 		flag:false,time:''
 	},secret))
+	createUserBroadcast(broadcastTable,socketID,from, publicKey)
 }
+function createUserBroadcast(table,socketID,from, publicKey){
+	table.push(new broadcastUser(socketID,from, publicKey))
+}
+
 function setSolicitFlag (table, sockedID,time){
 	const connection = findConnection(table,'socketID',sockedID)
 	if(connection && connection.solicitFlag.flag === false){
@@ -76,6 +88,10 @@ function findConnection(table,typeParameter,parameterMessage){
     }
 }
 
+function findUserBroadcast(table,parameterMessage){
+    return table.find(item=> item.socketID === parameterMessage)
+
+}
 
 io.on("connection", (socket)=>{
 	// prompt connection status
@@ -105,9 +121,11 @@ io.on("connection", (socket)=>{
 	socket.on("disconnect",()=>{
 			console.log(`Usuario desconectado ${socket.id}`)
 			const receiver = findConnection(routingTable,'socketID',socket.id)
+			const userBye = findUserBroadcast(broadcastTable,socket.id)
 			console.log(receiver)
-			if(receiver !== undefined){
+			if(receiver !== undefined && userBye !== undefined){
 					routingTable.splice(routingTable.indexOf(receiver),1)
+					broadcastTable.splice(broadcastTable.indexOf(userBye),1)
 			}else{
 					console.log("NO")
 			}
@@ -117,7 +135,7 @@ io.on("connection", (socket)=>{
 			console.log("———— DISCOVER ————\n\r",loggedUserName) // loggedUserName = {userName, publicKey, secret}
 			// to prevent identity theft
 			if (!checkConnection(routingTable,loggedUserName.userName)){
-					socket.emit("LoggedUsers",routingTable)
+					socket.emit("LoggedUsers",broadcastTable)
 					addConnection(routingTable,socket.id,loggedUserName.userName,loggedUserName.publicKey,loggedUserName.privateKey,loggedUserName.secret)
 					socket.broadcast.emit("Broadcast Request",{
 							socketID:socket.id,
@@ -125,6 +143,7 @@ io.on("connection", (socket)=>{
 							publicKey: loggedUserName.publicKey}
 					)
 					console.log(routingTable)
+					console.log(broadcastTable)
 			}else{
 					console.log("Socket is now online")
 			}

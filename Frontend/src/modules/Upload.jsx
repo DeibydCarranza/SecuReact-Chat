@@ -1,13 +1,15 @@
 import { useRef } from "react";
 import "../assets/Login.css";
 
-export const Upload = ({ handleFile ,typeCri}) => {
+export const Upload = ({ handleFile ,typeCri, setBackendKeysReceived, setKeysGenerateButton}) => {
 
     const hiddenFileInput = useRef(null);
 
     const handleClick = (event) => {
         event.preventDefault();
         hiddenFileInput.current.click();
+        setBackendKeysReceived(true);
+        setKeysGenerateButton(false);
     };
     
     const handleChange = async (event) => {

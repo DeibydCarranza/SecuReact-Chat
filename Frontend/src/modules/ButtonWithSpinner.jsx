@@ -38,6 +38,7 @@ const ButtonWithSpinner = ({socketClient, setKeysGenerateButton}) => {
  
         setIsLoading(false);
         setRenderKey(renderKey + 1); 
+        
         setKeysGenerateButton(true);
     };
     

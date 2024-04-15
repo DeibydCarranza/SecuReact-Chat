@@ -94,7 +94,7 @@ export function MessageService() {
   };
   console.log("Current Banner ->\n",selectedBanner)
   // console.log("Conversations  ->\n",messages)
-  // console.log("Users          ->\n",users)
+  console.log("Users          ->\n",users)
   // console.log("LLaves        ->\n",user.state.keys)
 
   return (
