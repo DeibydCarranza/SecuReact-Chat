@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from "react-router-dom"
 import '../assets/Login.css'; 
 
-const ButtonWithSpinner = ({socketClient}) => {
+const ButtonWithSpinner = ({socketClient, setKeysGenerateButton}) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [renderKey, setRenderKey] = useState(0); 
@@ -38,7 +38,7 @@ const ButtonWithSpinner = ({socketClient}) => {
  
         setIsLoading(false);
         setRenderKey(renderKey + 1); 
-        
+        setKeysGenerateButton(true);
     };
     
     const copyToClipboard = (text) => {
