@@ -40,3 +40,16 @@ npm run dev
 npm run dev
 
 ```
+
+## Autores
+
+Este repositorio corresponde a la sección "1st project - Source Code" de los entregables para el primer proyecto de la asignatura Criptografía en la Facultad de Ingeniería de la Universidad Nacional Autónoma de México.
+
+Integrantes del equipo:
+→ Caballero Hernández Daniel
+→ Carranza Ochoa José David
+→ Morales Ortega Carlos
+→ Ramírez García Diego Andrés
+→ Teran García Rodolfo Mario
+
+Los autores del mismo se reservan los derechos de distribución y comercialización para todos los fines distintos a los establecidos para la asignatura.
