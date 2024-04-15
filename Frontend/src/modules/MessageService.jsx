@@ -21,6 +21,7 @@ export function MessageService() {
   const [users, setUsers] = useState([])                    // {socketID,from, publicKey}
 	const [icon, setIcon] = useState(faLockOpen)
   const [solicit, setSolicit] = useState(false)  
+  const [secret,setSecretConversation] = useState('')
   
   useEffect(()=>{
 
@@ -72,26 +73,23 @@ export function MessageService() {
     const selectSecret = async()=>{
       socketClient.emit("SOLICIT",selectedChat.socketID)
       const responseSecret = await synchronize.waitAdvertise(socketClient,"ADVERTISE") 
-      // if (responseSecret === user.state.secret){
-      //   console.log("cifro con mi secreto ",responseSecret)
-      // }else{
-      //   console.log("cifro con el secreto ",responseSecret)
-      // }
+      setSecretConversation(responseSecret)
     }
 
     if(JSON.stringify(selectedChat) !== '{}'){
       selectSecret()
-      setSolicit(true) 
+      setSolicit(true)
     }
   },[selectedChat])
 
   const handleIconChange = () => {
+    console.log("SECRETO   -–––––––––->  ", secret)
     const newIcon = icon === faLock ? faLockOpen : faLock;
     setIcon(newIcon);
     if (newIcon === faLock) {
-      symmetric.encryptMessages(messages,user.state.secret,selectedChat);
+      symmetric.encryptMessages(messages,secret,selectedChat);
     } else {
-      symmetric.decrypt(messages,user.state.secret,selectedChat);
+      symmetric.decrypt(messages,secret,selectedChat);
     }
   };
   console.log("Current Banner ->\n",selectedBanner)
@@ -134,7 +132,7 @@ export function MessageService() {
         </div>
         
         <div className='message-main-conversation-input'>
-          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages} handleIconChange={handleIconChange} icon={icon} secret={user.state.secret} solicit={solicit}/>
+          <Input socketClient={socketClient} selectedChat={selectedChat} setMessages={setMessages} messages={messages} handleIconChange={handleIconChange} icon={icon} secret={secret} solicit={solicit}/>
         </div>
       </div>
     </main>	
