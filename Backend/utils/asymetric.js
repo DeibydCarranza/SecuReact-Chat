@@ -18,7 +18,7 @@ export function generateKeyPair() {
 
 export function signature(message, privateKey, secret) {
 	const decrypted_message = decrypt(message,secret)
-	console.log("message - signature",message)
+	// console.log("message - signature",message)
 	const sign = crypto.sign(
     'sha256',
     Buffer.from(decrypted_message, 'utf8'),
@@ -33,7 +33,7 @@ export function signature(message, privateKey, secret) {
 
 export function validate_sign(message, sign, publicKey,secret){
 	const decrypted_message = decrypt(message,secret)
-	console.log("mensage decrypted_message", decrypted_message)
+	// console.log("mensage decrypted_message", decrypted_message)
 	const isVerified = crypto.verify(
     'sha256',
     Buffer.from(decrypted_message, 'utf8'),

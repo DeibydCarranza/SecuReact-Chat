@@ -3,6 +3,7 @@ A secure message sending protocol using React and Socke.io
 
 
 ## Installation
+Esto para sistemas unix/linux
 ```bash
 # Install nvm-sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
@@ -11,17 +12,18 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 # Raiz del proyecto
 npm i cors express socket.io morgan
 npm i nodemon -D
+npm install
 
 
 # Carpeta Frontend/
 npm i vite
 npm i socket.io-client
+npm install
 
 
 # instalación de los íconos
 
 # url: https://docs.fontawesome.com/web/use-with/react/
-
 npm i --save @fortawesome/free-solid-svg-icons
 npm i --save @fortawesome/free-regular-svg-icons
 npm i --save @fortawesome/free-brands-svg-icons

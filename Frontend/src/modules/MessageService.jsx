@@ -83,7 +83,7 @@ export function MessageService() {
   },[selectedChat])
 
   const handleIconChange = () => {
-    console.log("SECRETO   -–––––––––->  ", secret)
+    // console.log("SECRETO   -–––––––––->  ", secret)
     const newIcon = icon === faLock ? faLockOpen : faLock;
     setIcon(newIcon);
     if (newIcon === faLock) {

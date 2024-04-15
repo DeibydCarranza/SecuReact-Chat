@@ -152,7 +152,7 @@ io.on("connection", (socket)=>{
 
 	socket.on("Request",(messageIncomming)=>{
 			console.log("———— Request & Response ————")
-			console.log("EL mensaje keys", Object.keys(messageIncomming))
+			// console.log("EL mensaje keys", Object.keys(messageIncomming))
 			// find socket.id to private message
 			const receiver = findConnection(routingTable,'socketID',messageIncomming.from)
 			const digital_sig = findConnection(routingTable,'socketID',socket.id)
@@ -166,8 +166,8 @@ io.on("connection", (socket)=>{
 					const sign = asymmetric.signature(messageIncomming.content.mensaje,digital_sig.privateKey,digital_sig.secret)
 					messageIncomming.content.signature = sign
 					messageIncomming.integrity = asymmetric.validate_sign(messageIncomming.content.mensaje,sign,digital_sig.publicKey,digital_sig.secret)
-					console.log("Firma --> ", messageIncomming.content.signature)
-					console.log("Integridad? --> ", messageIncomming.integrity)
+					// console.log("Firma --> ", messageIncomming.content.signature)
+					// console.log("Integridad? --> ", messageIncomming.integrity)
 					io.to(receiver.socketID).emit("Response",messageIncomming)
 			}else{
 					console.log(`Error ->  ${messageIncomming.from} not found\n`)

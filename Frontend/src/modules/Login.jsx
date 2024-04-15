@@ -65,7 +65,7 @@ export function Login() {
     } else {
       setKeysUpload([...keysUpload, privateKeyObj]);
     }
-    console.log("FILE PRIVATE   ", file.contents);
+    // console.log("FILE PRIVATE   ", file.contents);
   };
 
   const handleFilePublic = (file) => {
@@ -84,7 +84,7 @@ export function Login() {
     } else {
       setKeysUpload([...keysUpload, publicKeyObj]);
     }
-    console.log("FILE PUBLIC   ", file.contents);
+    // console.log("FILE PUBLIC   ", file.contents);
   };
   
   const handleSumbmit = (event)=>{
