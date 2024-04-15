@@ -14,6 +14,13 @@ export function  encryptMessages (messages,secret, selectedChat){
 export function  encryptMessage (secret,message){
 	return message=CryptoJS.AES.encrypt(message,secret).toString();
 }
+export function decryptMessage (message,secret){
+	console.log("El mensaje  ",message)
+	var bytes=CryptoJS.AES.decrypt(message,secret);
+	message = bytes.toString(CryptoJS.enc.Utf8);
+	console.log(`message: ${message} bytes: ${bytes},message:${message}`)
+	return message
+};
 export function decrypt (messages,secret,selectedChat){
 		const connectionBanner = routing.getUserConnection(messages,selectedChat)
 		console.log(connectionBanner.banner)

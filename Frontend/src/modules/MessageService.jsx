@@ -7,7 +7,6 @@ import { TitleChatCard } from './TitleChatsCard.jsx'
 import { useContext } from 'react';
 import { SocketClient } from './SocketClient';
 import * as symmetric from '../utils/encrypt.js'
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons"
 import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import * as synchronize from '../utils/synchronize.js'
 
@@ -20,7 +19,7 @@ export function MessageService() {
 	const noFirstBroadcast = useRef(false)
   const [selectedBanner,setBanner] = useState([])           // banner[]
   const [users, setUsers] = useState([])                    // {socketID,from, publicKey}
-	const [icon, setIcon] = useState(faLock)
+	const [icon, setIcon] = useState(faLockOpen)
   const [solicit, setSolicit] = useState(false)  
   
   useEffect(()=>{
@@ -73,11 +72,11 @@ export function MessageService() {
     const selectSecret = async()=>{
       socketClient.emit("SOLICIT",selectedChat.socketID)
       const responseSecret = await synchronize.waitAdvertise(socketClient,"ADVERTISE") 
-      if (responseSecret === user.state.secret){
-        console.log("cifro con mi secreto ",responseSecret)
-      }else{
-        console.log("cifro con el secreto ",responseSecret)
-      }
+      // if (responseSecret === user.state.secret){
+      //   console.log("cifro con mi secreto ",responseSecret)
+      // }else{
+      //   console.log("cifro con el secreto ",responseSecret)
+      // }
     }
 
     if(JSON.stringify(selectedChat) !== '{}'){
@@ -89,7 +88,6 @@ export function MessageService() {
   const handleIconChange = () => {
     const newIcon = icon === faLock ? faLockOpen : faLock;
     setIcon(newIcon);
-    
     if (newIcon === faLock) {
       symmetric.encryptMessages(messages,user.state.secret,selectedChat);
     } else {
@@ -97,10 +95,9 @@ export function MessageService() {
     }
   };
   console.log("Current Banner ->\n",selectedBanner)
-  console.log("Conversations  ->\n",messages)
-  console.log("Users          ->\n",users)
-  console.log("LLaves        ->\n",user.state.keys)
-  console.log("Selected Chat ->\n",selectedChat)
+  // console.log("Conversations  ->\n",messages)
+  // console.log("Users          ->\n",users)
+  // console.log("LLaves        ->\n",user.state.keys)
 
   return (
     // Plantilla principal después del inicio de sesión

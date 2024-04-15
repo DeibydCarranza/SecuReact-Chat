@@ -22,6 +22,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "cripto": "^1.1.4",
     "crypto-js": "^4.2.0"
   }
 }

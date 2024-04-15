@@ -8,7 +8,7 @@ import { faLock, faLockOpen } from "@fortawesome/free-solid-svg-icons";
 
 export function Input({socketClient, selectedChat, setMessages, messages,handleIconChange,icon,secret,solicit}){
 		// managment Input of form
-    const {banner,inputMessage, handleSubmit, onChange, setBanner} = useInput({socketClient,selectedChat,secret})
+    const {banner,inputMessage, handleSubmit, onChange, setBanner} = useInput({socketClient,selectedChat,secret,icon})
 
 
     // instantiate conversation inside message array 
@@ -19,7 +19,7 @@ export function Input({socketClient, selectedChat, setMessages, messages,handleI
 					setMessages((usersBanner)=>[
 						... usersBanner,{
 							socketID: selectedChat.socketID,
-							banner:banner
+							banner:[]
 						}]
 					)
 				}
@@ -28,7 +28,7 @@ export function Input({socketClient, selectedChat, setMessages, messages,handleI
 
 		// update conversation
 		useEffect(()=>{
-			if(banner.length !== 0){
+			if(banner.length !== 0 && Object.keys(selectedChat).length !== 0){
 				const historyBanner = routing.updateConnection(messages,selectedChat) // return banner
 				if(historyBanner){
 					setMessages((usersBanner)=>[
